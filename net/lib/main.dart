@@ -7,13 +7,12 @@ void main() {
 class ShelterNet extends StatelessWidget {
   const ShelterNet({super.key});
 
-  // root
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'ShelterNet',
-      home: LoginPage(), // init page
+      home: LoginPage(), // landing page
     );
   }
 }
