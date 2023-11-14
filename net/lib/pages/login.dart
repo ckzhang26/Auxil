@@ -2,7 +2,6 @@ import 'package:net/config/imported.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
-
   @override
   State<LoginPage> createState() => LoginPageState();
 }
@@ -25,7 +24,8 @@ class LoginPageState extends State<LoginPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           // Insert all interactables into the main widget column,
           children: <Widget>[
-            Gui.pad(24),
+            // Gui helpers
+            Gui.pad(26),
             Gui.textInput("Username", usernameController),
             Gui.pad(5),
             Gui.textInput("Password", passowrdController),
