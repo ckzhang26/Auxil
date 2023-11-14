@@ -1,0 +1,4 @@
+#Mon Nov 13 17:35:08 PST 2023
+base.0=C\:\\Users\\bass\\Desktop\\shelter-net\\Auxil\\net\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
+path.0=classes.dex
+renamed.0=classes.dex
