@@ -45,3 +45,12 @@ app.*.map.json
 
 # VS Code
 /.vscode
+.properties
+.lock
+.bin
+.java
+.stamp
+.cc
+.h
+.cmake
+.swift
