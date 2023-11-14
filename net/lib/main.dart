@@ -12,7 +12,7 @@ class ShelterNet extends StatelessWidget {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'ShelterNet',
-      home: LoginPage(), // landing page
+      home: LoginPage(),
     );
   }
 }
