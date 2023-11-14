@@ -25,7 +25,7 @@ class LoginPageState extends State<LoginPage> {
           // Insert all interactables into the main widget column,
           children: <Widget>[
             // Gui helpers
-            Gui.pad(26),
+            Gui.pad(28),
             Gui.textInput("Username", usernameController),
             Gui.pad(5),
             Gui.textInput("Password", passowrdController),
