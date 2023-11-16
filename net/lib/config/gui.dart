@@ -22,13 +22,13 @@ class Gui {
     );
   }
 
-  static OutlinedButton button(String text) {
+  static OutlinedButton button(String text, Function() callback) {
     return OutlinedButton(
       style: TextButton.styleFrom(
         foregroundColor: Colors.white,
         backgroundColor: Config.green,
       ),
-      onPressed: () => {},
+      onPressed: () => {callback()},
       child: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
           return SizedBox(
@@ -69,6 +69,23 @@ class Gui {
         ),
       ),
     );
+  }
+
+  static GestureDetector iconButton(
+      String text, Icon icon, Function() callback) {
+    return GestureDetector(
+        onTap: () => {callback()},
+        behavior: HitTestBehavior.translucent,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            icon,
+            Text(
+              text,
+              style: TextStyle(fontSize: 24),
+            ),
+          ],
+        ));
   }
 
   static TextField textInput(String hint, TextEditingController controller) {

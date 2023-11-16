@@ -4,10 +4,10 @@ class SheltersPage extends StatefulWidget {
   const SheltersPage({super.key});
 
   @override
-  State<SheltersPage> createState() => SheltersPagetate();
+  State<SheltersPage> createState() => _SheltersPageState();
 }
 
-class SheltersPagetate extends State<SheltersPage> {
+class _SheltersPageState extends State<SheltersPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

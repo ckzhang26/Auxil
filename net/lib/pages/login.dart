@@ -1,4 +1,6 @@
 import 'package:net/config/imported.dart';
+import 'package:net/pages/home.dart';
+import 'package:net/pages/zipcode.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -17,7 +19,8 @@ class LoginPageState extends State<LoginPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Config.yellow,
-      appBar: Gui.header("ShelterNet"),
+      // appBar: Gui.header("ShelterNet"),
+      appBar: Gui.header("Shelter"),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
         child: Column(
@@ -31,11 +34,26 @@ class LoginPageState extends State<LoginPage> {
             Gui.textInput("Password", passowrdController),
             Gui.labelButton("Forgot Password?", 26),
             Gui.pad(64),
-            Gui.button("Login"),
+            Gui.button(
+                "Login",
+                () => {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const ZipCodePage()),
+                      )
+                    }),
             Gui.pad(18),
             Gui.label("Or", 23),
             Gui.pad(18),
-            Gui.button("Continue As Guest"),
+            Gui.button(
+                "Continue As Guest",
+                () => {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Placeholder()),
+                      )
+                    }),
             Gui.pad(22),
             Gui.labelButton("Sign Up", 28),
           ],
