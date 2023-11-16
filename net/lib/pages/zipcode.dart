@@ -39,7 +39,8 @@ class _ZipCodePageState extends State<ZipCodePage> {
                 () => {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => HomePage()),
+                        MaterialPageRoute(
+                            builder: (context) => const HomePage()),
                       )
                     }),
             Gui.pad(18),
@@ -47,5 +48,11 @@ class _ZipCodePageState extends State<ZipCodePage> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    zipCodeController.dispose();
+    super.dispose();
   }
 }

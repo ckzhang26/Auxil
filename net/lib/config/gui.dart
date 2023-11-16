@@ -71,21 +71,17 @@ class Gui {
     );
   }
 
-  static GestureDetector iconButton(
-      String text, Icon icon, Function() callback) {
-    return GestureDetector(
-        onTap: () => {callback()},
-        behavior: HitTestBehavior.translucent,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            icon,
-            Text(
-              text,
-              style: TextStyle(fontSize: 24),
-            ),
-          ],
-        ));
+  static Column iconLabelButton(String text, Icon icon, Function() callback) {
+    return Column(
+      children: [
+        IconButton(
+          onPressed: () => {callback()},
+          icon: icon,
+          iconSize: 100,
+        ),
+        Text(text, style: const TextStyle(fontSize: 24)),
+      ],
+    );
   }
 
   static TextField textInput(String hint, TextEditingController controller) {

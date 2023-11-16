@@ -27,69 +27,52 @@ class _HomePageState extends State<HomePage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Gui.iconButton(
-                  "Shelters",
-                  Icon(Icons.night_shelter, size: 100.0),
-                  () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const SheltersPage()),
-                    );
-                  },
-                ),
-                Gui.iconButton(
-                  "Job Search",
-                  Icon(Icons.work, size: 100.0),
-                  () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const JobsPage()),
-                    );
-                  },
-                ),
+                Gui.iconLabelButton("Shelters", const Icon(Icons.night_shelter),
+                    () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const SheltersPage()),
+                  );
+                }),
+                Gui.iconLabelButton("Job Search", const Icon(Icons.work), () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const JobsPage()),
+                  );
+                }),
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Gui.iconButton(
-                  "Healthcare",
-                  Icon(Icons.medical_services, size: 100.0),
-                  () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const HealthCarePage()),
-                    );
-                  },
-                ),
-                Gui.iconButton(
-                  "Veterinary",
-                  Icon(Icons.pets, size: 100.0),
-                  () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const VeterinaryPage()),
-                    );
-                  },
-                ),
+                Gui.iconLabelButton(
+                    "Healthcare", const Icon(Icons.medical_services), () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const HealthCarePage()),
+                  );
+                }),
+                Gui.iconLabelButton("Veterinary", const Icon(Icons.pets), () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const VeterinaryPage()),
+                  );
+                }),
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Gui.iconButton(
-                  "Map View",
-                  Icon(Icons.location_on, size: 100.0),
-                  () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const MapPage()),
-                    );
-                  },
-                ),
+                Gui.iconLabelButton("Map View", const Icon(Icons.location_on),
+                    () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const MapPage()),
+                  );
+                }),
               ],
             ),
           ],

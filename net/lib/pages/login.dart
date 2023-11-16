@@ -1,5 +1,4 @@
 import 'package:net/config/imported.dart';
-import 'package:net/pages/home.dart';
 import 'package:net/pages/zipcode.dart';
 
 class LoginPage extends StatefulWidget {
@@ -19,7 +18,6 @@ class LoginPageState extends State<LoginPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Config.yellow,
-      // appBar: Gui.header("ShelterNet"),
       appBar: Gui.header("Shelter"),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
@@ -51,7 +49,7 @@ class LoginPageState extends State<LoginPage> {
                 () => {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => Placeholder()),
+                        MaterialPageRoute(builder: (context) => ZipCodePage()),
                       )
                     }),
             Gui.pad(22),
