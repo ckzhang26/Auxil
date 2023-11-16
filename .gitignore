@@ -17,15 +17,15 @@ migrate_working_dir/
 .idea/
 
 # Flutter Generated
-/android/app/src/main/java/io/flutter/plugins
-/linux/flutter
-/macos/flutter
-/windows/flutter
+/net/android/app/src/main/java/io/flutter/plugins
+/net/linux/flutter
+/net/macos/flutter
+/net/windows/flutter
 
 # Gradle Generated
-/android/.gradle/7.5/executionHistory
-/android/.gradle/7.5/fileHashes
-/android/.gradle/buildOutputCleanup
+/net/android/.gradle/7.5/executionHistory
+/net/android/.gradle/7.5/fileHashes
+/net/android/.gradle/buildOutputCleanup
 
 # Flutter/Dart/Pub related
 **/doc/api/
@@ -45,9 +45,9 @@ app.*.symbols
 app.*.map.json
 
 # Android Studio will place build artifacts here
-/android/app/debug
-/android/app/profile
-/android/app/release
+/net/android/app/debug
+/net/android/app/profile
+/net/android/app/release
 
 # VS Code
 /.vscode
