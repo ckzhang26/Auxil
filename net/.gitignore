@@ -21,6 +21,7 @@ android/app/src/main/java/io/flutter/plugins/
 linux/flutter/
 macos/flutter/
 windows/flutter/
+android/.properties
 
 # Gradle Generated
 android/.gradle/7.5/executionHistory/
