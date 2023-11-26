@@ -7,7 +7,9 @@ import 'resources/veterinary.dart';
 import 'resources/healthcare.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  final String zipCode;
+
+  HomePage({Key? key, this.zipCode = "95819"}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -70,7 +72,10 @@ class _HomePageState extends State<HomePage> {
                     () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const MapPage()),
+                    MaterialPageRoute(
+                        builder: (context) => MapPage(
+                              zipCode: widget.zipCode,
+                            )),
                   );
                 }),
               ],

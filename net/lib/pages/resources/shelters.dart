@@ -5,6 +5,8 @@ import 'package:http/http.dart' as http;
 
 import 'package:net/config/imported.dart';
 
+import 'map_view.dart';
+
 class SheltersPage extends StatefulWidget {
   const SheltersPage({super.key});
 
@@ -58,6 +60,17 @@ class _SheltersPageState extends State<SheltersPage> {
                   ),
               ],
             ),
+            floatingActionButton: IconButton(
+                icon: const Icon(Icons.my_location),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => MapPage(
+                              zipCode: "95819",
+                            )),
+                  );
+                }),
           );
   }
 

@@ -3,6 +3,10 @@
         android:label="net"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyC1RuhYlMwVwWMn6RZwjBuzvECC298vpgM"/>
+            
         <activity
             android:name=".MainActivity"
             android:exported="true"

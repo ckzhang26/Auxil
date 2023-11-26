@@ -40,7 +40,9 @@ class _ZipCodePageState extends State<ZipCodePage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const HomePage()),
+                            builder: (context) => HomePage(
+                                  zipCode: zipCodeController.value.text,
+                                )),
                       )
                     }),
             Gui.pad(18),
