@@ -1,14 +1,15 @@
-import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-
 import 'package:net/config/imported.dart';
+import 'dart:convert';
 
+import '../../config/maps.dart' as maps;
 import 'map_view.dart';
 
 class SheltersPage extends StatefulWidget {
-  const SheltersPage({super.key});
+  final String zipCode;
+
+  const SheltersPage({Key? key, this.zipCode = "95819"}) : super(key: key);
 
   @override
   State<SheltersPage> createState() => _SheltersPageState();
@@ -19,24 +20,32 @@ class _SheltersPageState extends State<SheltersPage> {
   var housingData;
 
   Future<void> _fetchData() async {
-    try {
-      final shelterResponse = await http.get(Uri.parse(
-          'https://data.orghunter.com/v1/charitysearch?user_key=ada9f57c9b97ab634db6635fd3004f72&searchTerm=shelter&city=Sacramento'));
+    String city = await maps.getCityNameFromZip(widget.zipCode);
+    print(city);
+    if (city != null) {
+      try {
+        final shelterResponse = await http.get(Uri.parse(
+            'https://data.orghunter.com/v1/charitysearch?user_key=ada9f57c9b97ab634db6635fd3004f72&searchTerm=shelter&city=$city'));
 
-      final housingResponse = await http.get(Uri.parse(
-          'https://data.orghunter.com/v1/charitysearch?user_key=ada9f57c9b97ab634db6635fd3004f72&city=Sacramento&category=L'));
+        final housingResponse = await http.get(Uri.parse(
+            'https://data.orghunter.com/v1/charitysearch?user_key=ada9f57c9b97ab634db6635fd3004f72&city=$city&category=L'));
 
-      if (shelterResponse.statusCode == 200 &&
-          housingResponse.statusCode == 200) {
-        shelterData = jsonDecode(shelterResponse.body);
-        housingData = jsonDecode(housingResponse.body);
-        setState(() {});
-      }
-    } catch (e) {
-      if (kDebugMode) {
+        if (shelterResponse.statusCode == 200 &&
+            housingResponse.statusCode == 200) {
+          shelterData = jsonDecode(shelterResponse.body);
+          housingData = jsonDecode(housingResponse.body);
+          setState(() {});
+        }
+      } catch (e) {
         print(e);
       }
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchData();
   }
 
   @override
@@ -72,11 +81,5 @@ class _SheltersPageState extends State<SheltersPage> {
                   );
                 }),
           );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _fetchData();
   }
 }

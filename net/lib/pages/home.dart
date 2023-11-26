@@ -34,7 +34,9 @@ class _HomePageState extends State<HomePage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const SheltersPage()),
+                        builder: (context) => SheltersPage(
+                              zipCode: widget.zipCode,
+                            )),
                   );
                 }),
                 Gui.iconLabelButton("Job Search", const Icon(Icons.work), () {
