@@ -1,4 +1,7 @@
-import 'package:net/config/imported.dart';
+import 'package:flutter/material.dart';
+
+import 'package:net/config/cfg.dart';
+import 'package:net/config/gui.dart';
 
 import 'resources/shelters.dart';
 import 'resources/job_search.dart';

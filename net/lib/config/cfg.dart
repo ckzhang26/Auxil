@@ -1,4 +1,4 @@
-import 'package:net/config/imported.dart';
+import 'package:flutter/material.dart';
 
 class Config {
   static const Color yellow = Color(0xFFCBA328);

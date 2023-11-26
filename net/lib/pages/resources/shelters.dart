@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import 'package:net/config/imported.dart';
+import 'package:flutter/material.dart';
+import 'package:net/config/gui.dart';
 import 'dart:convert';
 
 import '../../config/maps.dart' as maps;

@@ -1,4 +1,5 @@
-import 'package:net/config/imported.dart';
+import 'package:flutter/material.dart';
+import 'package:net/config/gui.dart';
 
 class VeterinaryPage extends StatefulWidget {
   const VeterinaryPage({super.key});

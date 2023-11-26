@@ -1,4 +1,5 @@
-import 'package:net/config/imported.dart';
+import 'package:flutter/material.dart';
+import 'package:net/config/cfg.dart';
 
 class Gui {
   static AppBar header(String text) {

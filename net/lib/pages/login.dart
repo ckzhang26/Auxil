@@ -1,4 +1,6 @@
-import 'package:net/config/imported.dart';
+import 'package:flutter/material.dart';
+import 'package:net/config/cfg.dart';
+import 'package:net/config/gui.dart';
 import 'package:net/pages/zipcode.dart';
 
 class LoginPage extends StatefulWidget {
@@ -49,7 +51,7 @@ class LoginPageState extends State<LoginPage> {
                 () => {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => ZipCodePage()),
+                        MaterialPageRoute(builder: (context) => const ZipCodePage()),
                       )
                     }),
             Gui.pad(22),

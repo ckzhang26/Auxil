@@ -1,4 +1,5 @@
-import 'package:net/config/imported.dart';
+import 'package:flutter/material.dart';
+import 'package:net/pages/login.dart';
 
 void main() {
   runApp(const ShelterNet());
