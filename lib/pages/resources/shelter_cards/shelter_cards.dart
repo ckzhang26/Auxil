@@ -1,4 +1,5 @@
 import 'package:net/config/imported.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ShelterCards extends StatefulWidget {
   const ShelterCards(
@@ -25,7 +26,11 @@ class _ShelterCardState extends State<ShelterCards> {
         child: ListTile(
           leading: Text(widget.zipCode),
           title: Text(widget.charityName),
-          subtitle: Text(widget.url),
+          subtitle: GestureDetector(
+              onDoubleTap: () {
+                launch(context);
+              },
+              child: Text(widget.url)),
           trailing: IconButton(
               onPressed: () {
                 setState(() {
@@ -38,5 +43,23 @@ class _ShelterCardState extends State<ShelterCards> {
         ),
       ),
     );
+  }
+
+  launch(BuildContext context) async {
+    final Uri url = Uri.parse(widget.url);
+
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
+    } else {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Could not launch $url'),
+            duration:
+                const Duration(seconds: 3), // Adjust the duration as needed.
+          ),
+        );
+      }
+    }
   }
 }

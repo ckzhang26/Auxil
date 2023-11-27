@@ -16,7 +16,6 @@ class SheltersPage extends StatefulWidget {
 class _SheltersPageState extends State<SheltersPage> {
   var shelterData;
   var housingData;
-  Icon fav = const Icon(Icons.star_border);
 
   Future<void> _fetchData() async {
     try {
