@@ -21,7 +21,7 @@ class _SheltersPageState extends State<SheltersPage> {
   var housingData;
 
   Future<void> _fetchData() async {
-    String city = await maps.getCityNameFromZip(widget.zipCode);
+    String city = await maps.getCityNameFromZip2(widget.zipCode);
     print(city);
     if (city != null) {
       try {

@@ -4,7 +4,7 @@ import 'package:net/user/mongodb.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await MongoDB.connect();
+  // await MongoDB.connect();
   runApp(const ShelterNet());
 }
 

@@ -26,7 +26,7 @@ class HealthCarePageState extends State<HealthCarePage> {
         {
           "resource": "t",
           "property": "citytown",
-          "value": await maps.getCityNameFromZip(widget.zipCode),
+          "value": await maps.getCityNameFromZip2(widget.zipCode),
           "operator": "="
         }
       ],

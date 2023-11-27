@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:net/config/cfg.dart';
 import 'package:net/config/gui.dart';
 
-import 'home.dart';
-
 class ZipCodePage extends StatefulWidget {
   const ZipCodePage({super.key});
 
@@ -36,7 +34,10 @@ class _ZipCodePageState extends State<ZipCodePage> {
             Gui.pad(50),
             Gui.textInput("Zip Code", zipCodeController),
             Gui.pad(50),
-            Gui.button("Submit", () => { Navigator.of(context).popUntil((route) => route.isFirst) }),
+            Gui.button(
+                "Submit",
+                () =>
+                    {Navigator.of(context).popUntil((route) => route.isFirst)}),
             Gui.pad(18),
           ],
         ),

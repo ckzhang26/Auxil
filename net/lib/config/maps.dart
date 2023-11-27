@@ -1,5 +1,6 @@
 import 'package:http/http.dart' as http;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:xml/xml.dart';
 import 'dart:convert';
 
 class AddressComponent {
@@ -44,6 +45,29 @@ Future<String> getCityNameFromZip(String zipCode) async {
   final cityComponent = addressComponents
       .firstWhere((component) => component.types.contains('locality'));
   return cityComponent.longName;
+}
+
+Future<String> getCityNameFromZip2(String zipCode) async {
+  var path =
+      'https://secure.shippingapis.com/ShippingAPI.dll?API=CityStateLookup&XML=<CityStateLookupRequest USERID="7100KEVIN6Y13"><ZipCode ID=\'0\'><Zip5>${zipCode}</Zip5></ZipCode></CityStateLookupRequest>';
+
+  final response = await http.get(Uri.parse(path));
+  final XmlDocument xml = XmlDocument.parse(response.body);
+
+  String cityName = xml
+          .getElement("CityStateLookupResponse")
+          ?.getElement("ZipCode")
+          ?.getElement("City")
+          ?.innerText ??
+      "";
+
+  if (cityName.isNotEmpty) {
+    cityName = cityName[0].toUpperCase() + cityName.substring(1).toLowerCase();
+  }
+
+  print(cityName);
+
+  return cityName;
 }
 
 Future<LatLng> getLocationFromZip(String zipCode) async {
