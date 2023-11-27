@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:net/config/cfg.dart';
 import 'package:net/config/gui.dart';
 import 'package:net/pages/login.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'resources/shelters.dart';
@@ -11,8 +12,10 @@ import 'resources/map_view.dart';
 import 'resources/veterinary.dart';
 import 'resources/healthcare.dart';
 
+import '../main.dart';
+
 class HomePage extends StatefulWidget {
-  final String zipCode;
+  String zipCode;
 
   HomePage({Key? key, this.zipCode = "95819"}) : super(key: key);
 
@@ -28,9 +31,9 @@ class _HomePageState extends State<HomePage> {
       prefs.clear();
       prefs.setBool("has_access", false);
       WidgetsBinding.instance.addPostFrameCallback((_) => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const LoginPage()),
-            ));
+            context,
+            MaterialPageRoute(builder: (context) => const LoginPage()),
+          ));
     } else {
       bool? initLoad = prefs.getBool('has_access');
       if (initLoad != true) {
@@ -45,6 +48,8 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     checkPrefs(context, false);
+    widget.zipCode = Provider.of<ZipCode>(context).value;
+    print(widget.zipCode);
 
     return Scaffold(
         resizeToAvoidBottomInset: false,
@@ -88,7 +93,9 @@ class _HomePageState extends State<HomePage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const HealthCarePage()),
+                        builder: (context) => HealthCarePage(
+                              zipCode: widget.zipCode,
+                            )),
                   );
                 }),
                 Gui.iconLabelButton("Veterinary", const Icon(Icons.pets), () {

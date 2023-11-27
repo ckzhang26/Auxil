@@ -1,5 +1,6 @@
 import 'package:http/http.dart' as http;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:mongo_dart/mongo_dart.dart';
 import 'package:xml/xml.dart';
 import 'dart:convert';
 
@@ -62,7 +63,10 @@ Future<String> getCityNameFromZip2(String zipCode) async {
       "";
 
   if (cityName.isNotEmpty) {
-    cityName = cityName[0].toUpperCase() + cityName.substring(1).toLowerCase();
+    cityName = cityName
+        .split(' ')
+        .map((word) => word[0].toUpperCase() + word.substring(1).toLowerCase())
+        .join(' ');
   }
 
   print(cityName);

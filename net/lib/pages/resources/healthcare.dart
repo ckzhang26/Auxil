@@ -69,7 +69,9 @@ class HealthCarePageState extends State<HealthCarePage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(result['facility_name'] ?? ''),
-                          Text(result['address'] ?? ''),
+                          Text(
+                              "${result['address']}, ${result['citytown']} ${result['state']} ${result['zip_code']}" ??
+                                  ''),
                           Text(result['telephone_number'] ?? ''),
                         ],
                       ),
