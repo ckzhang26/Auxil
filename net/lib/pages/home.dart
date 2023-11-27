@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:net/config/cfg.dart';
 import 'package:net/config/gui.dart';
+import 'package:net/pages/login.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'resources/shelters.dart';
 import 'resources/job_search.dart';
@@ -19,16 +21,44 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  void checkPrefs(BuildContext context, bool logout) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    if (logout) {
+      prefs.clear();
+      prefs.setBool("has_access", false);
+      WidgetsBinding.instance.addPostFrameCallback((_) => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const LoginPage()),
+            ));
+    } else {
+      bool? initLoad = prefs.getBool('has_access');
+      if (initLoad != true) {
+        WidgetsBinding.instance.addPostFrameCallback((_) => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const LoginPage()),
+            ));
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    checkPrefs(context, false);
+
     return Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: Config.yellow,
-        appBar: Gui.header("Welcome"),
+        appBar: Gui.header("Welcome", true),
         body: Center(
             child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
+            Container(
+              alignment: Alignment.topLeft,
+              child: Gui.labelButton(
+                  "Logout", 28, () => {checkPrefs(context, true)}),
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [

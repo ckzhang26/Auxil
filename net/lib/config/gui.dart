@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:net/config/cfg.dart';
-import 'package:net/config/nav.dart';
 
 class Gui {
-  static AppBar header(String text) {
+  static AppBar header(String text, bool hideBack) {
     return AppBar(
+      automaticallyImplyLeading: !hideBack,
       backgroundColor: Config.green,
       foregroundColor: Colors.white,
       title: RichText(
@@ -129,6 +129,52 @@ class Gui {
     );
   }
 
+  static TextField passwordInput(String hint, TextEditingController controller) {
+    return TextField(
+      obscureText: true,
+      enableSuggestions: false,
+      autocorrect: false,
+      controller: controller,
+      maxLength: 32,
+      maxLines: 1,
+      style: const TextStyle(
+        fontSize: 28,
+        color: Colors.black,
+        shadows: [
+          Shadow(
+            blurRadius: 12,
+            color: Color.fromARGB(55, 0, 0, 0),
+            offset: Offset(0, 1),
+          ),
+        ],
+      ),
+      decoration: InputDecoration(
+        border: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(15)),
+          borderSide: BorderSide(
+            color: Colors.white,
+            strokeAlign: 15,
+            width: 1,
+          ),
+        ),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: hint,
+        hintStyle: const TextStyle(
+          fontSize: 28,
+          color: Colors.black,
+          shadows: [
+            Shadow(
+              blurRadius: 12,
+              color: Color.fromARGB(55, 0, 0, 0),
+              offset: Offset(0, 1),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   static Padding pad(double amt) {
     return Padding(
       padding: EdgeInsets.only(top: amt, bottom: 0, left: 0, right: 0),
@@ -155,10 +201,7 @@ class Gui {
     );
   }
 
-  static void notify(String text) {
-    var ctx = NavigationService.navigatorKey.currentContext;
-    if (ctx != null) {
-      ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(content: Text(text)));
-    }
+  static void notify(BuildContext context, String text) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(text)));
   }
 }

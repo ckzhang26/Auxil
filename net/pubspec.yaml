@@ -39,7 +39,8 @@ dependencies:
   chaleno: ^0.0.6
   google_maps_flutter: ^2.5.0
   mongo_dart: ^0.9.3
-  realm: ^1.2.0
+  crypto: ^3.0.3
+  shared_preferences: ^2.2.2
 
 dev_dependencies:
   flutter_test:

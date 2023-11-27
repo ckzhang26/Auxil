@@ -12,7 +12,7 @@ class PasswordPageState extends State<PasswordPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Gui.header("Reset Password"),
+      appBar: Gui.header("Reset Password", false),
     );
   }
 }

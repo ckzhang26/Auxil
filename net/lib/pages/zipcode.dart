@@ -19,7 +19,7 @@ class _ZipCodePageState extends State<ZipCodePage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Config.yellow,
-      appBar: Gui.header("Zip Code"),
+      appBar: Gui.header("Zip Code", true),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
         child: Column(
@@ -36,17 +36,7 @@ class _ZipCodePageState extends State<ZipCodePage> {
             Gui.pad(50),
             Gui.textInput("Zip Code", zipCodeController),
             Gui.pad(50),
-            Gui.button(
-                "Submit",
-                () => {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => HomePage(
-                                  zipCode: zipCodeController.value.text,
-                                )),
-                      )
-                    }),
+            Gui.button("Submit", () => { Navigator.of(context).popUntil((route) => route.isFirst) }),
             Gui.pad(18),
           ],
         ),

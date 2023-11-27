@@ -12,7 +12,7 @@ class SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Gui.header("Settings"),
+      appBar: Gui.header("Settings", false),
     );
   }
 }

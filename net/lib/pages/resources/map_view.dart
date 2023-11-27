@@ -27,7 +27,7 @@ class MapPageState extends State<MapPage> {
           return Text('Error: ${snapshot.error}');
         } else {
           return Scaffold(
-              appBar: Gui.header("Map"),
+              appBar: Gui.header("Map", false),
               body: Center(
                 child: GoogleMap(
                   initialCameraPosition: CameraPosition(

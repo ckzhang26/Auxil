@@ -12,7 +12,7 @@ class JobsPageState extends State<JobsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Gui.header("Job Search"),
+      appBar: Gui.header("Job Search", false),
     );
   }
 }

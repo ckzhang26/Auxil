@@ -57,7 +57,7 @@ class HealthCarePageState extends State<HealthCarePage> {
     return (hospitalData == null)
         ? const Center(child: CircularProgressIndicator())
         : Scaffold(
-            appBar: Gui.header("Healthcare"),
+            appBar: Gui.header("Healthcare", false),
             body: ListView.builder(
                 itemCount: hospitalData.length,
                 itemBuilder: (BuildContext context, int index) {

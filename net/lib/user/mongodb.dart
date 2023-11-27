@@ -1,9 +1,13 @@
 // ignore_for_file: prefer_typing_uninitialized_variables
 
+import 'dart:developer';
+
 import 'package:mongo_dart/mongo_dart.dart';
 import 'package:net/config/gui.dart';
 import 'package:net/user/credentials.dart';
 import 'dart:convert';
+
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MongoDB {
   static var db, collection;
@@ -14,30 +18,53 @@ class MongoDB {
     collection = db.collection(dbCollection);
   }
 
-  static Future<bool> _insert(Database data) async {
+  static Future<String> _insert(Database data) async {
     try {
       var result = await collection.insertOne(data.toJson());
       if (result != null) {
-        return result.isSuccess;
+        if (result.isSuccess) {
+          return "Success";
+        } else {
+          inspect(result);
+          return "Error";
+        }
+      } else {
+        return "Bad request result";
       }
     } catch (e) {
-      Gui.notify("An error occured!");
+      return e.toString();
     }
-    return false;
   }
 
-  static void signup(Database data) async {
-    bool result = await _insert(data);
-    if (result) {
-      Gui.notify("You have signed up!");
+  static Future<bool> signup(context, Database data) async {
+    String result = await _insert(data);
+    if (result == "Success") {
+      Gui.notify(context, "You have signed up! Please log in.");
+      return true;
+    } else if (result == "Error") {
+      Gui.notify(context, "Sign up has failed!");
+      return false;
     } else {
-      Gui.notify("Sign up has failed.");
+      Gui.notify(context, "!: $result");
+      return false;
     }
+  }
+
+  static Future<void> updateLocalUser(Database data) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString("email", data.email);
+    prefs.setString("username", data.username);
+    prefs.setString("password", data.password);
+    prefs.setString("zip", data.zip);
+
+    prefs.setStringList("shelter", data.bookmarks.shelter.map((e) => e.toString()).toList());
+    prefs.setStringList("job", data.bookmarks.job.map((e) => e.toString()).toList());
+    prefs.setStringList("healthcare", data.bookmarks.healthcare.map((e) => e.toString()).toList());
+    prefs.setStringList("veterinary", data.bookmarks.veterinary.map((e) => e.toString()).toList());
   }
 }
 
 Database databaseFromJson(String str) => Database.fromJson(json.decode(str));
-
 String databaseToJson(Database data) => json.encode(data.toJson());
 
 class Database {
@@ -73,27 +100,27 @@ class Database {
 }
 
 class Bookmarks {
-  List<dynamic> shelther;
+  List<dynamic> shelter;
   List<dynamic> job;
   List<dynamic> healthcare;
   List<dynamic> veterinary;
 
   Bookmarks({
-    required this.shelther,
+    required this.shelter,
     required this.job,
     required this.healthcare,
     required this.veterinary,
   });
 
   factory Bookmarks.fromJson(Map<String, dynamic> json) => Bookmarks(
-        shelther: List<dynamic>.from(json["shelther"].map((x) => x)),
+        shelter: List<dynamic>.from(json["shelter"].map((x) => x)),
         job: List<dynamic>.from(json["job"].map((x) => x)),
         healthcare: List<dynamic>.from(json["healthcare"].map((x) => x)),
         veterinary: List<dynamic>.from(json["veterinary"].map((x) => x)),
       );
 
   Map<String, dynamic> toJson() => {
-        "shelther": List<dynamic>.from(shelther.map((x) => x)),
+        "shelter": List<dynamic>.from(shelter.map((x) => x)),
         "job": List<dynamic>.from(job.map((x) => x)),
         "healthcare": List<dynamic>.from(healthcare.map((x) => x)),
         "veterinary": List<dynamic>.from(veterinary.map((x) => x)),

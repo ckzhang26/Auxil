@@ -54,7 +54,7 @@ class _SheltersPageState extends State<SheltersPage> {
     return (shelterData == null || housingData == null)
         ? const Center(child: CircularProgressIndicator())
         : Scaffold(
-            appBar: Gui.header("Shelters"),
+            appBar: Gui.header("Shelters", false),
             body: ListView(
               children: [
                 for (var result in shelterData['data'])

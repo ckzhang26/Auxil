@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:net/config/nav.dart';
-import 'package:net/pages/login.dart';
+import 'package:net/pages/home.dart';
 import 'package:net/user/mongodb.dart';
 
 void main() async {
@@ -15,10 +14,9 @@ class ShelterNet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      navigatorKey: NavigationService.navigatorKey,
       debugShowCheckedModeBanner: false,
       title: 'ShelterNet',
-      home: const LoginPage(),
+      home: HomePage(),
     );
   }
 }

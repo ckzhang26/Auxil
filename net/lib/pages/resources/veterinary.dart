@@ -12,7 +12,7 @@ class VeterinaryPageState extends State<VeterinaryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Gui.header("Veterinary"),
+      appBar: Gui.header("Veterinary", false),
     );
   }
 }
