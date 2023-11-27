@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:net/config/cfg.dart';
+import 'package:net/config/nav.dart';
 
 class Gui {
   static AppBar header(String text) {
@@ -55,9 +56,9 @@ class Gui {
     );
   }
 
-  static TextButton labelButton(String text, double size) {
+  static TextButton labelButton(String text, double size, Function() callback) {
     return TextButton(
-      onPressed: () => {},
+      onPressed: () => {callback()},
       child: Center(
         child: RichText(
           text: TextSpan(
@@ -152,5 +153,12 @@ class Gui {
         text: text,
       ),
     );
+  }
+
+  static void notify(String text) {
+    var ctx = NavigationService.navigatorKey.currentContext;
+    if (ctx != null) {
+      ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(content: Text(text)));
+    }
   }
 }

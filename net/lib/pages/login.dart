@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:net/config/cfg.dart';
 import 'package:net/config/gui.dart';
+import 'package:net/pages/password_reset.dart';
+import 'package:net/pages/signup.dart';
 import 'package:net/pages/zipcode.dart';
 
 class LoginPage extends StatefulWidget {
@@ -32,7 +34,12 @@ class LoginPageState extends State<LoginPage> {
             Gui.textInput("Username", usernameController),
             Gui.pad(5),
             Gui.textInput("Password", passowrdController),
-            Gui.labelButton("Forgot Password?", 26),
+            Gui.labelButton("Forgot Password?", 26, () => {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const PasswordPage()),
+                      )
+                    }),
             Gui.pad(64),
             Gui.button(
                 "Login",
@@ -55,7 +62,12 @@ class LoginPageState extends State<LoginPage> {
                       )
                     }),
             Gui.pad(22),
-            Gui.labelButton("Sign Up", 28),
+            Gui.labelButton("Sign Up", 28, () => {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const SignUpPage()),
+                      )
+                    }),
           ],
         ),
       ),

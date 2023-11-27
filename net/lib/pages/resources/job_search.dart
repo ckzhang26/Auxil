@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:net/config/gui.dart';
-import 'package:chaleno/chaleno.dart';
 
 class JobsPage extends StatefulWidget {
   const JobsPage({super.key});

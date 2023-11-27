@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:net/config/gui.dart';
 
-class SignUpPage extends StatefulWidget {
-  const SignUpPage({super.key});
+class SettingsPage extends StatefulWidget {
+  const SettingsPage({super.key});
 
   @override
-  State<SignUpPage> createState() => SignUpPageState();
+  State<SettingsPage> createState() => SettingsPageState();
 }
 
-class SignUpPageState extends State<SignUpPage> {
+class SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
