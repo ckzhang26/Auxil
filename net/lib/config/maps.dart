@@ -78,6 +78,18 @@ Future<LatLng> getLocationFromZip(String zipCode) async {
   final response = await http.get(Uri.parse(
       'https://maps.googleapis.com/maps/api/geocode/json?address=$zipCode&key=AIzaSyC1RuhYlMwVwWMn6RZwjBuzvECC298vpgM'));
   final responseBody = json.decode(response.body);
-  return LatLng(responseBody['results'][0]['geometry']['location']['lat'],
+  return LatLng(
+      responseBody['results'] ?? [0] ?? ['geometry'] ?? ['location'] ?? ['lat'],
       responseBody['results'][0]['geometry']['location']['lng']);
+}
+
+Future<LatLng> getLatLngFromZip(String zipCode) async {
+  final path =
+      'https://www.zipcodeapi.com/rest/ubLdjcGLuKif7NfoCrVS3LM3muwIvYbiVcNTtoRD0ABGwcoSjY2Glfy4uRcyhm1H/info.json/$zipCode/degrees';
+
+  final response = await http.get(Uri.parse(path));
+  final responseBody = json.decode(response.body);
+  print('$responseBody ${responseBody['lat']} : ${responseBody['lng']}');
+
+  return LatLng(responseBody['lat'], responseBody['lng']);
 }

@@ -19,7 +19,7 @@ class MapPageState extends State<MapPage> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<LatLng>(
-      future: maps.getLocationFromZip(widget.zipCode),
+      future: maps.getLatLngFromZip(widget.zipCode),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return CircularProgressIndicator();
