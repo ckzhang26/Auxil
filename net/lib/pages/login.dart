@@ -77,7 +77,7 @@ class LoginPageState extends State<LoginPage> {
 
   Future<void> guestButton(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool('has_access', true);
+    prefs.setBool(Config.initPos, true);
 
     // ignore: use_build_context_synchronously
     Navigator.push(
@@ -88,7 +88,7 @@ class LoginPageState extends State<LoginPage> {
 
   Future<void> loginButton(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool('has_access', true);
+    prefs.setBool(Config.initPos, true);
   }
 
   @override

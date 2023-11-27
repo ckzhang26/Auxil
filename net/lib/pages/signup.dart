@@ -102,7 +102,7 @@ class SignUpPageState extends State<SignUpPage> {
       Navigator.pop(context);
 
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setBool("has_access", true);
+      prefs.setBool(Config.initPos, true);
 
       MongoDB.updateLocalUser(user);
     }
