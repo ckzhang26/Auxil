@@ -32,7 +32,7 @@ class _HomePageState extends State<HomePage> {
               MaterialPageRoute(builder: (context) => const LoginPage()),
             ));
     } else {
-      bool? initLoad = prefs.getBool('has_access');
+      bool? initLoad = prefs.getBool(Config.initPos);
       if (initLoad != true) {
         WidgetsBinding.instance.addPostFrameCallback((_) => Navigator.push(
               context,
