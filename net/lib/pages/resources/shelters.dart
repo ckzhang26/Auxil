@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:net/config/gui.dart';
+import 'package:net/pages/resources/card_item.dart';
 import 'dart:convert';
 
 import '../../config/maps.dart' as maps;
@@ -58,50 +59,16 @@ class _SheltersPageState extends State<SheltersPage> {
             body: ListView(
               children: [
                 for (var result in shelterData['data'])
-                  Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            result['zipCode'] ?? '',
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          Text(
-                            "${result['charityName']}",
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          Text(
-                            "${result['url']}",
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              IconButton(
-                                // Add to database
-                                onPressed: () => {},
-                                icon: Icon(Icons.favorite),
-                                color: Colors.red,
-                                iconSize: 30,
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  )
-                //   ListTile(
-                //       leading: Text(result['zipCode']),
-                //       title: Text(result['charityName']),
-                //       subtitle: Text(result['url'])),
-                // for (var result in housingData['data'])
-                // ListTile(
-                //   leading: Text(result['zipCode']),
-                //   title: Text(result['charityName']),
-                //   subtitle: Text(result['url']),
-                // ),
+                  CardItem(
+                    charityName: result['charityName'],
+                    url: result['url'],
+                    zipCode: result['zipCode'],
+                  ),
+                for (var result in housingData['data'])
+                  CardItem(
+                      charityName: result['charityName'],
+                      url: result['url'],
+                      zipCode: result['zipCode']),
               ],
             ),
             floatingActionButton: IconButton(
@@ -110,7 +77,7 @@ class _SheltersPageState extends State<SheltersPage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => MapPage(
+                        builder: (context) => const MapPage(
                               zipCode: "95819",
                             )),
                   );

@@ -34,7 +34,7 @@ class _ZipCodePageState extends State<ZipCodePage> {
               textAlign: TextAlign.center,
             ),
             Gui.pad(50),
-            Gui.textInput("Zip Code", zipCodeController),
+            Gui.textInputNK("Zip Code", zipCodeController),
             Gui.pad(50),
             Gui.button("Submit", () => {zipCodeButton(context)}),
             Gui.pad(18),

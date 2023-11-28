@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:net/config/cfg.dart';
+import 'package:net/pages/settings.dart';
 
 class Gui {
   static AppBar header(String text, bool hideBack) {
@@ -21,6 +22,37 @@ class Gui {
         ),
       ),
       centerTitle: true,
+    );
+  }
+
+  static AppBar headerWelcome(
+      String text, bool hideBack, BuildContext context) {
+    return AppBar(
+      automaticallyImplyLeading: !hideBack,
+      backgroundColor: Config.green,
+      foregroundColor: Colors.white,
+      title: RichText(
+        textAlign: TextAlign.center,
+        text: TextSpan(
+          style: const TextStyle(fontSize: 30, shadows: [
+            Shadow(
+              blurRadius: 10,
+              color: Color.fromARGB(125, 0, 0, 0),
+              offset: Offset(0, 1),
+            )
+          ]),
+          text: text,
+        ),
+      ),
+      centerTitle: true,
+      actions: [
+        IconButton(
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => SettingsPage()));
+            },
+            icon: const Icon(Icons.settings))
+      ],
     );
   }
 
@@ -129,7 +161,53 @@ class Gui {
     );
   }
 
-  static TextField passwordInput(String hint, TextEditingController controller) {
+  // nk stands for with number keypad
+  static TextField textInputNK(String hint, TextEditingController controller) {
+    return TextField(
+      controller: controller,
+      keyboardType: TextInputType.number,
+      maxLength: 32,
+      maxLines: 1,
+      style: const TextStyle(
+        fontSize: 28,
+        color: Colors.black,
+        shadows: [
+          Shadow(
+            blurRadius: 12,
+            color: Color.fromARGB(55, 0, 0, 0),
+            offset: Offset(0, 1),
+          ),
+        ],
+      ),
+      decoration: InputDecoration(
+        border: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(15)),
+          borderSide: BorderSide(
+            color: Colors.white,
+            strokeAlign: 15,
+            width: 1,
+          ),
+        ),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: hint,
+        hintStyle: const TextStyle(
+          fontSize: 28,
+          color: Colors.black,
+          shadows: [
+            Shadow(
+              blurRadius: 12,
+              color: Color.fromARGB(55, 0, 0, 0),
+              offset: Offset(0, 1),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  static TextField passwordInput(
+      String hint, TextEditingController controller) {
     return TextField(
       obscureText: true,
       enableSuggestions: false,
