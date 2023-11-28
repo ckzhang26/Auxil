@@ -1,12 +1,15 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:net/config/gui.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import 'dart:convert';
 
 import '../../pages/resources/map_view.dart';
 import '../../config/maps.dart' as maps;
+import '../../main.dart';
 
 class HealthCarePage extends StatefulWidget {
   final String zipCode;
@@ -42,6 +45,18 @@ class HealthCarePageState extends State<HealthCarePage> {
         body: jsonString);
     if (response.statusCode == 200) {
       hospitalData = jsonDecode(response.body)['results'];
+      for (var result in hospitalData) {
+        String addressQuery =
+            "${result['address']}%20${result['citytown']}%20${result['state']}";
+        var path =
+            'https://maps.googleapis.com/maps/api/geocode/json?address=$addressQuery&key=AIzaSyC1RuhYlMwVwWMn6RZwjBuzvECC298vpgM';
+
+        LatLng coords = await maps.getLatLngFromAddress(addressQuery);
+        Marker marker = Marker(
+            markerId: MarkerId(result['facility_name']), position: coords);
+        Provider.of<GoogleMapsMarkerList>(context, listen: false)
+            .addValue(marker);
+      }
       setState(() {});
     }
   }

@@ -38,7 +38,7 @@ class _HomePageState extends State<HomePage> {
           ));
     } else {
       bool? initLoad = prefs.getBool(Config.accessPos);
-      if (initLoad != true) {
+      if (initLoad == true) {
         WidgetsBinding.instance.addPostFrameCallback((_) => Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const LoginPage()),

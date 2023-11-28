@@ -53,6 +53,7 @@ class _ZipCodePageState extends State<ZipCodePage> {
     }
     Provider.of<ZipCode>(context, listen: false)
         .updateValue(zipCodeController.text);
+    Provider.of<GoogleMapsMarkerList>(context, listen: false).clear();
     Navigator.of(context).popUntil((route) => route.isFirst);
   }
 

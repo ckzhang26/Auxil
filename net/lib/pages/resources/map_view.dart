@@ -1,10 +1,14 @@
+import 'dart:ffi';
+
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:net/config/gui.dart';
+import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import '../../config/maps.dart' as maps;
+import '../../main.dart';
 
 class MapPage extends StatefulWidget {
   final String zipCode;
@@ -34,6 +38,10 @@ class MapPageState extends State<MapPage> {
                     target: snapshot.requireData,
                     zoom: 14.0,
                   ),
+                  markers:
+                      Provider.of<GoogleMapsMarkerList>(context, listen: false)
+                          .list
+                          .toSet(),
                 ),
               ));
         }
