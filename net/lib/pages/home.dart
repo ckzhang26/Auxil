@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:net/config/cfg.dart';
 import 'package:net/config/gui.dart';
 import 'package:net/pages/login.dart';
+import 'package:net/user/mongodb.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -38,7 +39,7 @@ class _HomePageState extends State<HomePage> {
           ));
     } else {
       bool? initLoad = prefs.getBool(Config.accessPos);
-      if (initLoad == true) {
+      if (initLoad != true) {
         WidgetsBinding.instance.addPostFrameCallback((_) => Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const LoginPage()),
@@ -205,6 +206,7 @@ class _HomePageState extends State<HomePage> {
     Provider.of<ZipCode>(context, listen: false)
         .updateValue(zipCodeController.text);
     Navigator.of(context).popUntil((route) => route.isFirst);
+    MongoDB.giveAccess(context);
   }
 
   @override
