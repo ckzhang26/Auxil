@@ -55,6 +55,7 @@ class _ZipCodePageState extends State<ZipCodePage> {
     }
     Provider.of<ZipCode>(context, listen: false)
         .updateValue(zipCodeController.text);
+    MongoDB.giveAccess(context);
     Navigator.of(context).popUntil((route) => route.isFirst);
   }
 

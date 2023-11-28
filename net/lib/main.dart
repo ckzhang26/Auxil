@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await MongoDB.connect();
+  //await MongoDB.connect();
   runApp(ChangeNotifierProvider(
       create: (context) => ZipCode(), child: const ShelterNet()));
 }
