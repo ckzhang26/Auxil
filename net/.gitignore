@@ -24,7 +24,6 @@ windows/flutter/
 android/.properties
 
 # Specifics
-lib/user/credentials.dart
 android/local.properties
 
 # Gradle Generated
