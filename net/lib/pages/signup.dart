@@ -74,16 +74,15 @@ class SignUpPageState extends State<SignUpPage> {
     }
 
     var udata = await MongoDB.getUser(username);
-    if(udata == null) {
-      Gui.notify(context, "Connection error");
+    if (udata != null) {
+      if (udata["username"] == "no") {
+        Gui.notify(context, "Connection failure");
+      } else {
+        Gui.notify(context, "Invalid login attempt");
+      }
       return;
     }
-
-    if(udata.isNotEmpty) {
-      Gui.notify(context, "Username is already taken");
-      return;
-    }
-
+  
     String password1 = passwordController.text;
     if (password1.length < 8) {
       Gui.notify(context, "Your password must be atleast 8 characters long");
@@ -95,8 +94,14 @@ class SignUpPageState extends State<SignUpPage> {
       Gui.notify(context, "Passwords do not match");
       return;
     }
-    var encrpted = sha256.convert(utf8.encode(password2)).toString();
+
     var zip = zipcodeController.text;
+    if (zip.length != 5) {
+      Gui.notify(context, "Please enter a valid Zip Code");
+      return;
+    }
+
+    var encrpted = sha256.convert(utf8.encode(password2)).toString();
     Bookmarks bookmarks = Bookmarks(// empty
         shelter: [], job: [], healthcare: [], veterinary: []);
 

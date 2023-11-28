@@ -1,7 +1,6 @@
 // ignore_for_file: use_build_context_synchronously, duplicate_ignore, use_build_context_synchronously
 
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';

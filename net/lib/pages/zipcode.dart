@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:net/config/cfg.dart';
 import 'package:net/config/gui.dart';
+import 'package:net/user/mongodb.dart';
 import 'package:provider/provider.dart';
 import '../main.dart';
 
@@ -37,17 +38,32 @@ class _ZipCodePageState extends State<ZipCodePage> {
             Gui.textInput("Zip Code", zipCodeController),
             Gui.pad(50),
             Gui.button(
-                "Submit",
-                () => {
-                      Provider.of<ZipCode>(context, listen: false)
-                          .updateValue(zipCodeController.text),
-                      Navigator.of(context).popUntil((route) => route.isFirst),
-                    }),
+                "Submit", () => {validateZipcode(zipCodeController.text)}),
             Gui.pad(18),
           ],
         ),
       ),
     );
+  }
+
+  void validateZipcode(String text) async {
+    if (text.length != 5) {
+      Gui.notify(context, "Please enter a valid Zip Code");
+      return;
+    }
+    MongoDB.giveAccess(context);
+    Provider.of<ZipCode>(context, listen: false)
+        .updateValue(zipCodeController.text);
+
+    MongoDB.updateLocalUser(Database(
+        email: "no",
+        username: "no",
+        password: "no",
+        zip: "no",
+        bookmarks:
+            Bookmarks(shelter: [], job: [], healthcare: [], veterinary: [])));
+
+    Navigator.of(context).popUntil((route) => route.isFirst);
   }
 
   @override

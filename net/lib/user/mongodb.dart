@@ -39,7 +39,7 @@ class MongoDB {
   }
 
   static Future<Map<String, dynamic>?> getUser(String username) async {
-    return await collection.findOne({"username": username});
+    return collection == null ? {username: "no"} : await collection.findOne({"username": username});
   }
 
   static Future<bool> signup(context, Database data) async {
