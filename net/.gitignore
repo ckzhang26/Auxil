@@ -23,6 +23,10 @@ macos/flutter/
 windows/flutter/
 android/.properties
 
+# Specifics
+lib/user/credentials.dart
+android/local.properties
+
 # Gradle Generated
 android/.gradle/7.5/executionHistory/
 android/.gradle/7.5/fileHashes/
