@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:net/config/cfg.dart';
 import 'package:net/config/gui.dart';
@@ -26,19 +27,19 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final TextEditingController zipCodeController = TextEditingController();
-
   void _validateAccess(BuildContext context, bool logout) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-
+    MongoDB.syncLocalUser(true);
     if (logout) {
+      MongoDB.user.isGuest = true;
       prefs.clear();
-      prefs.setBool("has_access", false);
+      prefs.setBool(Config.initAccessPos, true);
       WidgetsBinding.instance.addPostFrameCallback((_) => Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const LoginPage()),
           ));
     } else {
-      bool? initLoad = prefs.getBool(Config.accessPos);
+      bool? initLoad = prefs.getBool(Config.initAccessPos);
       if (initLoad != true) {
         WidgetsBinding.instance.addPostFrameCallback((_) => Navigator.push(
               context,
@@ -50,9 +51,9 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    MongoDB.syncLocalUser(true);
     _validateAccess(context, false);
     widget.zipCode = Provider.of<ZipCode>(context).value;
-
     return Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: Config.yellow,

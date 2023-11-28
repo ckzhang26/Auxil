@@ -13,6 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class MongoDB {
   static var db, collection;
+  static late var user;
 
   static connect() async {
     db = await Db.create(dbGateway);
@@ -58,7 +59,8 @@ class MongoDB {
     }
   }
 
-  static Future<void> updateLocalUser(Database data) async {
+  static Future<void> storeLocalUser(Database data) async {
+    MongoDB.user = data;
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString("email", data.email);
     prefs.setString("username", data.username);
@@ -75,29 +77,21 @@ class MongoDB {
         data.bookmarks.veterinary.map((e) => e.toString()).toList());
   }
 
-  static Future<Database> getLocalUser() async {
+  static void syncLocalUser(bool init) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    /*List<List<dynamic>> bookmarks = [];
-    stringList.forEach((element) {
-      mapList.add({"name": "$element", "selected": false});
-    });*/
-
-    return Database(
+    MongoDB.user = Database(
+        isGuest: init ? false : MongoDB.user.isGuest,
         email: prefs.getString("email").toString(),
         username: prefs.getString("username").toString(),
         password: prefs.getString("password").toString(),
         zip: prefs.getString("zip").toString(),
-        bookmarks: Bookmarks(
-            shelter:
-                [],
-            job: [],
-            healthcare: [],
-            veterinary: []));
+        bookmarks:
+            Bookmarks(shelter: [], job: [], healthcare: [], veterinary: []));
   }
 
   static void giveAccess(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool(Config.accessPos, true);
+    prefs.setBool(Config.initAccessPos, true);
   }
 }
 
@@ -105,6 +99,7 @@ Database databaseFromJson(String str) => Database.fromJson(json.decode(str));
 String databaseToJson(Database data) => json.encode(data.toJson());
 
 class Database {
+  bool isGuest;
   String email;
   String username;
   String password;
@@ -112,6 +107,7 @@ class Database {
   Bookmarks bookmarks;
 
   Database({
+    required this.isGuest,
     required this.email,
     required this.username,
     required this.password,
@@ -120,6 +116,7 @@ class Database {
   });
 
   factory Database.fromJson(Map<String, dynamic> json) => Database(
+        isGuest: false,
         email: json["email"],
         username: json["username"],
         password: json["password"],
@@ -134,6 +131,21 @@ class Database {
         "zip": zip,
         "bookmarks": bookmarks.toJson(),
       };
+
+  static Database getEmpty() {
+    return Database(
+        isGuest: true,
+        email: "",
+        username: "",
+        password: "",
+        zip: "",
+        bookmarks: Bookmarks(
+          shelter: [],
+          job: [],
+          healthcare: [],
+          veterinary: [],
+        ));
+  }
 }
 
 class Bookmarks {

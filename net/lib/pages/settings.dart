@@ -10,7 +10,6 @@ class SettingsPage extends StatefulWidget {
 }
 
 class SettingsPageState extends State<SettingsPage> {
-  late String password;
   bool isEditing = false;
 
   TextEditingController usernameController = TextEditingController();
@@ -23,9 +22,7 @@ class SettingsPageState extends State<SettingsPage> {
   }
 
   void getSettings() async {
-    var user = await MongoDB.getLocalUser();
-    usernameController.text = user.username;
-    emailController.text = user.email;
+    setState(() {});
   }
 
   @override
@@ -37,31 +34,39 @@ class SettingsPageState extends State<SettingsPage> {
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              buildUserInfoLabel("Username", usernameController.text, usernameController),
-              buildUserInfoLabel("Password", "********", passwordController),
-              buildUserInfoLabel("email", emailController.text, emailController),
-              const SizedBox(
-                height: 16,
-              ),
-              Align(
-                alignment: Alignment.centerRight,
-                child: isEditing
-                    ? ElevatedButton(
-                        onPressed: () {
-                          saveChanges();
-                        },
-                        child: const Text('Save Changes'))
-                    : TextButton(
-                        onPressed: () {
-                          setState(() {
-                            isEditing = true;
-                          });
-                        },
-                        child: const Text('Edit')),
-              )
-            ],
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: MongoDB.user.isGuest != null || MongoDB.user.isGuest == false
+                ? [
+                    buildUserInfoLabel(
+                        "Username", MongoDB.user.username ?? "", usernameController),
+                    buildUserInfoLabel(
+                        "Password", "********", passwordController),
+                    buildUserInfoLabel(
+                        "Email", MongoDB.user.email ?? "", emailController),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: isEditing
+                          ? ElevatedButton(
+                              onPressed: () {
+                                saveChanges();
+                              },
+                              child: const Text('Save Changes'))
+                          : TextButton(
+                              onPressed: () {
+                                setState(() {
+                                  isEditing = true;
+                                });
+                              },
+                              child: const Text('Edit')),
+                    )
+                  ]
+                : [
+                    Center(child: Gui.label("You are logged in as a guest", 27)),
+                    Center(child: Gui.label("Please login before trying to access settings", 16))
+                ],
           ),
         ),
       ),

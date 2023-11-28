@@ -106,6 +106,7 @@ class SignUpPageState extends State<SignUpPage> {
         shelter: [], job: [], healthcare: [], veterinary: []);
 
     Database user = Database(
+        isGuest: false,
         email: email,
         username: username,
         password: encrpted,
@@ -114,8 +115,6 @@ class SignUpPageState extends State<SignUpPage> {
 
     if (await MongoDB.signup(context, user)) {
       Navigator.pop(context);
-      MongoDB.giveAccess(context);
-      MongoDB.updateLocalUser(user);
     }
   }
 
