@@ -24,6 +24,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final TextEditingController zipCodeController = TextEditingController();
+
   void checkPrefs(BuildContext context, bool logout) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -61,8 +63,51 @@ class _HomePageState extends State<HomePage> {
           children: <Widget>[
             Container(
               alignment: Alignment.topLeft,
-              child: Gui.labelButton(
-                  "Logout", 28, () => {checkPrefs(context, true)}),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Gui.labelButton(
+                      "Logout", 28, () => {checkPrefs(context, true)}),
+                  ElevatedButton(
+                    child: Text('Change Zip Code'),
+                    onPressed: () {
+                      showModalBottomSheet(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return Padding(
+                              padding: EdgeInsets.only(
+                                bottom:
+                                    MediaQuery.of(context).viewInsets.bottom,
+                              ),
+                              child: Container(
+                                  height: 200,
+                                  color: Colors.amber,
+                                  child: Center(
+                                      child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: <Widget>[
+                                      const Text('Change Zip Code'),
+                                      Gui.textInput(
+                                          "Zip Code", zipCodeController),
+                                      ElevatedButton(
+                                        child: const Text('Submit'),
+                                        onPressed: () => {
+                                          Navigator.pop(context),
+                                          Provider.of<ZipCode>(context,
+                                                  listen: false)
+                                              .updateValue(
+                                                  zipCodeController.text)
+                                        },
+                                      ),
+                                    ],
+                                  ))),
+                            );
+                          });
+                    },
+                  )
+                ],
+              ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,

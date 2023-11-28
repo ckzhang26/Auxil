@@ -1,6 +1,5 @@
 import 'package:http/http.dart' as http;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:mongo_dart/mongo_dart.dart';
 import 'package:xml/xml.dart';
 import 'dart:convert';
 
@@ -89,7 +88,7 @@ Future<LatLng> getLatLngFromZip(String zipCode) async {
 
   final response = await http.get(Uri.parse(path));
   final responseBody = json.decode(response.body);
-  print('$responseBody ${responseBody['lat']} : ${responseBody['lng']}');
+  // print('$responseBody ${responseBody['lat']} : ${responseBody['lng']}');
 
   return LatLng(responseBody['lat'], responseBody['lng']);
 }

@@ -70,8 +70,7 @@ class HealthCarePageState extends State<HealthCarePage> {
                         children: <Widget>[
                           Text(result['facility_name'] ?? ''),
                           Text(
-                              "${result['address']}, ${result['citytown']} ${result['state']} ${result['zip_code']}" ??
-                                  ''),
+                              "${result['address']}, ${result['citytown']} ${result['state']} ${result['zip_code']}"),
                           Text(result['telephone_number'] ?? ''),
                         ],
                       ),

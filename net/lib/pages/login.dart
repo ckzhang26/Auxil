@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:net/config/cfg.dart';
 import 'package:net/config/gui.dart';
-import 'package:net/pages/home.dart';
 import 'package:net/pages/password_reset.dart';
 import 'package:net/pages/signup.dart';
 import 'package:net/pages/zipcode.dart';
@@ -53,7 +52,12 @@ class LoginPageState extends State<LoginPage> {
                       )
                     }),
             Gui.pad(64),
-            Gui.button("Login", () => { loginButton(context), Navigator.of(context).popUntil((route) => route.isFirst) }),
+            Gui.button(
+                "Login",
+                () => {
+                      loginButton(context),
+                      Navigator.of(context).popUntil((route) => route.isFirst)
+                    }),
             Gui.pad(18),
             Gui.label("Or", 23),
             Gui.pad(18),
