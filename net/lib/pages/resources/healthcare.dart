@@ -68,10 +68,31 @@ class HealthCarePageState extends State<HealthCarePage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text(result['facility_name'] ?? ''),
                           Text(
-                              "${result['address']}, ${result['citytown']} ${result['state']} ${result['zip_code']}"),
+                            result['facility_name'] ?? '',
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          Text(
+                            "${result['address']}",
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          Text(
+                            "${result['citytown']} ${result['state']} ${result['zip_code']}",
+                            overflow: TextOverflow.ellipsis,
+                          ),
                           Text(result['telephone_number'] ?? ''),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              IconButton(
+                                // Add to database
+                                onPressed: () => {},
+                                icon: Icon(Icons.favorite),
+                                color: Colors.red,
+                                iconSize: 30,
+                              ),
+                            ],
+                          ),
                         ],
                       ),
                     ),

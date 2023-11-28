@@ -37,7 +37,9 @@ class LoginPageState extends State<LoginPage> {
       backgroundColor: Config.yellow,
       appBar: Gui.header("Shelter", true),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
+        padding: EdgeInsets.symmetric(
+            horizontal: MediaQuery.of(context).size.width * .05,
+            vertical: MediaQuery.of(context).size.height * .001),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           // Insert all interactables into the main widget column,

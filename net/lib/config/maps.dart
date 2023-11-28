@@ -88,7 +88,10 @@ Future<LatLng> getLatLngFromZip(String zipCode) async {
 
   final response = await http.get(Uri.parse(path));
   final responseBody = json.decode(response.body);
-  // print('$responseBody ${responseBody['lat']} : ${responseBody['lng']}');
+
+  if (responseBody['lat'] == null || responseBody['lng'] == null) {
+    return LatLng(0, 0);
+  }
 
   return LatLng(responseBody['lat'], responseBody['lng']);
 }
