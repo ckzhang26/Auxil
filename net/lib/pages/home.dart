@@ -26,7 +26,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final TextEditingController zipCodeController = TextEditingController();
 
-  void checkPrefs(BuildContext context, bool logout) async {
+  void _validateAccess(BuildContext context, bool logout) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     if (logout) {
@@ -37,7 +37,7 @@ class _HomePageState extends State<HomePage> {
             MaterialPageRoute(builder: (context) => const LoginPage()),
           ));
     } else {
-      bool? initLoad = prefs.getBool(Config.initPos);
+      bool? initLoad = prefs.getBool(Config.accessPos);
       if (initLoad != true) {
         WidgetsBinding.instance.addPostFrameCallback((_) => Navigator.push(
               context,
@@ -49,7 +49,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    checkPrefs(context, false);
+    _validateAccess(context, false);
     widget.zipCode = Provider.of<ZipCode>(context).value;
     print(widget.zipCode);
 
@@ -67,7 +67,7 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Gui.labelButton(
-                      "Logout", 28, () => {checkPrefs(context, true)}),
+                      "Logout", 28, () => {_validateAccess(context, true)}),
                   ElevatedButton(
                     child: Text('Change Zip Code'),
                     onPressed: () {

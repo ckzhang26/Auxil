@@ -2,7 +2,9 @@
 
 import 'dart:developer';
 
+import 'package:flutter/material.dart';
 import 'package:mongo_dart/mongo_dart.dart';
+import 'package:net/config/cfg.dart';
 import 'package:net/config/gui.dart';
 import 'package:net/user/credentials.dart';
 import 'dart:convert';
@@ -36,6 +38,10 @@ class MongoDB {
     }
   }
 
+  static Future<Map<String, dynamic>?> getUser(String username) async {
+    return await collection.findOne({"username": username});
+  }
+
   static Future<bool> signup(context, Database data) async {
     String result = await _insert(data);
     if (result == "Success") {
@@ -57,10 +63,19 @@ class MongoDB {
     prefs.setString("password", data.password);
     prefs.setString("zip", data.zip);
 
-    prefs.setStringList("shelter", data.bookmarks.shelter.map((e) => e.toString()).toList());
-    prefs.setStringList("job", data.bookmarks.job.map((e) => e.toString()).toList());
-    prefs.setStringList("healthcare", data.bookmarks.healthcare.map((e) => e.toString()).toList());
-    prefs.setStringList("veterinary", data.bookmarks.veterinary.map((e) => e.toString()).toList());
+    prefs.setStringList(
+        "shelter", data.bookmarks.shelter.map((e) => e.toString()).toList());
+    prefs.setStringList(
+        "job", data.bookmarks.job.map((e) => e.toString()).toList());
+    prefs.setStringList("healthcare",
+        data.bookmarks.healthcare.map((e) => e.toString()).toList());
+    prefs.setStringList("veterinary",
+        data.bookmarks.veterinary.map((e) => e.toString()).toList());
+  }
+
+  static void giveAccess(BuildContext context) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool(Config.accessPos, true);
   }
 }
 

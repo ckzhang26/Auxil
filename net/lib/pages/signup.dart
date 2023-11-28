@@ -73,6 +73,17 @@ class SignUpPageState extends State<SignUpPage> {
       return;
     }
 
+    var udata = await MongoDB.getUser(username);
+    if(udata == null) {
+      Gui.notify(context, "Connection error");
+      return;
+    }
+
+    if(udata.isNotEmpty) {
+      Gui.notify(context, "Username is already taken");
+      return;
+    }
+
     String password1 = passwordController.text;
     if (password1.length < 8) {
       Gui.notify(context, "Your password must be atleast 8 characters long");
@@ -96,14 +107,9 @@ class SignUpPageState extends State<SignUpPage> {
         zip: zip,
         bookmarks: bookmarks);
 
-    bool success = await MongoDB.signup(context, user);
-
-    if (success) {
+    if (await MongoDB.signup(context, user)) {
       Navigator.pop(context);
-
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setBool(Config.initPos, true);
-
+      MongoDB.giveAccess(context);
       MongoDB.updateLocalUser(user);
     }
   }
