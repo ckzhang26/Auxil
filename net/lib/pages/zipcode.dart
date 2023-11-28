@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:net/config/cfg.dart';
 import 'package:net/config/gui.dart';
+import 'package:net/user/mongodb.dart';
 import 'package:provider/provider.dart';
 import '../main.dart';
 
@@ -36,6 +37,7 @@ class _ZipCodePageState extends State<ZipCodePage> {
             Gui.pad(50),
             Gui.textInputNK("Zip Code", zipCodeController),
             Gui.pad(50),
+
             Gui.button("Submit", () => {zipCodeButton(context)}),
             Gui.pad(18),
           ],
@@ -53,6 +55,7 @@ class _ZipCodePageState extends State<ZipCodePage> {
     }
     Provider.of<ZipCode>(context, listen: false)
         .updateValue(zipCodeController.text);
+    MongoDB.giveAccess(context);
     Provider.of<GoogleMapsMarkerList>(context, listen: false).clear();
     Navigator.of(context).popUntil((route) => route.isFirst);
   }

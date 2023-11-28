@@ -1,2 +1,3 @@
-const dbGateway = "mongodb+srv://Bass:DYBM3klEucpCJqZi@shelternetcluster.rqljvch.mongodb.net/";
+const dbGateway =
+    "mongodb+srv://genericUser:IawFYGNqj86Nvd8G@shelternetcluster.rqljvch.mongodb.net/";
 const dbCollection = "ShelterNetCollection";

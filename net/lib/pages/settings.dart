@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:net/config/gui.dart';
+import 'package:net/user/mongodb.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -9,9 +10,7 @@ class SettingsPage extends StatefulWidget {
 }
 
 class SettingsPageState extends State<SettingsPage> {
-  String username = "JakeFromStateFarm";
-  String email = "jake@fromStateFarm.com";
-  String password = '*********';
+  late String password;
   bool isEditing = false;
 
   TextEditingController usernameController = TextEditingController();
@@ -21,12 +20,17 @@ class SettingsPageState extends State<SettingsPage> {
   @override
   void initState() {
     super.initState();
-    usernameController.text = username;
-    emailController.text = email;
+  }
+
+  void getSettings() async {
+    var user = await MongoDB.getLocalUser();
+    usernameController.text = user.username;
+    emailController.text = user.email;
   }
 
   @override
   Widget build(BuildContext context) {
+    getSettings();
     return Scaffold(
       appBar: Gui.header("Settings", false),
       body: SingleChildScrollView(
@@ -35,9 +39,9 @@ class SettingsPageState extends State<SettingsPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              buildUserInfoLabel("Username", username, usernameController),
-              buildUserInfoLabel("Password", password, passwordController),
-              buildUserInfoLabel("email", email, emailController),
+              buildUserInfoLabel("Username", usernameController.text, usernameController),
+              buildUserInfoLabel("Password", "********", passwordController),
+              buildUserInfoLabel("email", emailController.text, emailController),
               const SizedBox(
                 height: 16,
               ),

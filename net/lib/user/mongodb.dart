@@ -39,7 +39,9 @@ class MongoDB {
   }
 
   static Future<Map<String, dynamic>?> getUser(String username) async {
-    return await collection.findOne({"username": username});
+    return collection == null
+        ? {username: "no"}
+        : await collection.findOne({"username": username});
   }
 
   static Future<bool> signup(context, Database data) async {
@@ -71,6 +73,26 @@ class MongoDB {
         data.bookmarks.healthcare.map((e) => e.toString()).toList());
     prefs.setStringList("veterinary",
         data.bookmarks.veterinary.map((e) => e.toString()).toList());
+  }
+
+  static Future<Database> getLocalUser() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    /*List<List<dynamic>> bookmarks = [];
+    stringList.forEach((element) {
+      mapList.add({"name": "$element", "selected": false});
+    });*/
+
+    return Database(
+        email: prefs.getString("email").toString(),
+        username: prefs.getString("username").toString(),
+        password: prefs.getString("password").toString(),
+        zip: prefs.getString("zip").toString(),
+        bookmarks: Bookmarks(
+            shelter:
+                [],
+            job: [],
+            healthcare: [],
+            veterinary: []));
   }
 
   static void giveAccess(BuildContext context) async {
