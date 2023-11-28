@@ -56,7 +56,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: Config.yellow,
-        appBar: Gui.header("Welcome", true),
+        appBar: Gui.headerWelcome("Welcome", true, context),
         body: Center(
             child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -69,7 +69,7 @@ class _HomePageState extends State<HomePage> {
                   Gui.labelButton(
                       "Logout", 28, () => {_validateAccess(context, true)}),
                   ElevatedButton(
-                    child: Text('Change Zip Code'),
+                    child: const Text('Change Zip Code'),
                     onPressed: () {
                       showModalBottomSheet(
                           context: context,
