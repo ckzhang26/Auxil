@@ -51,7 +51,6 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     checkPrefs(context, false);
     widget.zipCode = Provider.of<ZipCode>(context).value;
-    print(widget.zipCode);
 
     return Scaffold(
         resizeToAvoidBottomInset: false,
@@ -73,10 +72,10 @@ class _HomePageState extends State<HomePage> {
                       children: [
                         Text(
                           widget.zipCode,
-                          style: TextStyle(fontSize: 16),
+                          style: const TextStyle(fontSize: 16),
                         ),
                         ElevatedButton(
-                          child: Text('Change Zip Code'),
+                          child: const Text('Change Zip Code'),
                           onPressed: () {
                             showModalBottomSheet(
                                 context: context,
@@ -88,38 +87,31 @@ class _HomePageState extends State<HomePage> {
                                           .bottom,
                                     ),
                                     child: Container(
-                                        height: 200,
-                                        color: Config.green,
-                                        child: Center(
-                                            child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: <Widget>[
-                                            const Text(
-                                              'Change Zip Code',
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 20),
-                                            ),
-                                            Gui.textInput(
-                                                "Zip Code", zipCodeController),
-                                            ElevatedButton(
-                                              style: ButtonStyle(
-                                                  backgroundColor:
-                                                      MaterialStatePropertyAll(
-                                                          Config.yellow)),
-                                              child: const Text('Submit'),
-                                              onPressed: () => {
-                                                Navigator.pop(context),
-                                                Provider.of<ZipCode>(context,
-                                                        listen: false)
-                                                    .updateValue(
-                                                        zipCodeController.text)
-                                              },
-                                            ),
-                                          ],
-                                        ))),
+                                      height: 300,
+                                      padding: EdgeInsets.all(12.0),
+                                      color: Config.green,
+                                      child: ListView(
+                                        children: <Widget>[
+                                          const Text(
+                                            'Change Zip Code',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 20),
+                                          ),
+                                          Gui.textInput(
+                                              "Zip Code", zipCodeController),
+                                          ElevatedButton(
+                                            style: const ButtonStyle(
+                                                backgroundColor:
+                                                    MaterialStatePropertyAll(
+                                                        Config.yellow)),
+                                            child: const Text('Submit'),
+                                            onPressed: () =>
+                                                {zipCodeButton(context)},
+                                          ),
+                                        ],
+                                      ),
+                                    ),
                                   );
                                 });
                           },
@@ -134,7 +126,7 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Gui.iconLabelButton(
                             "Shelters", const Icon(Icons.night_shelter), () {
@@ -157,7 +149,7 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Gui.iconLabelButton(
                             "Healthcare", const Icon(Icons.medical_services),
@@ -181,7 +173,7 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Gui.iconLabelButton(
                             "Map View", const Icon(Icons.location_on), () {
@@ -201,5 +193,23 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         )));
+  }
+
+  Future<void> zipCodeButton(BuildContext context) async {
+    String zipCodeInput = zipCodeController.text;
+    RegExp zipCodeRegExp = RegExp(r'^\d{5}$');
+    if (!zipCodeRegExp.hasMatch(zipCodeInput)) {
+      Gui.notify(context, "Please enter a valid zip code");
+      return;
+    }
+    Provider.of<ZipCode>(context, listen: false)
+        .updateValue(zipCodeController.text);
+    Navigator.of(context).popUntil((route) => route.isFirst);
+  }
+
+  @override
+  void dispose() {
+    zipCodeController.dispose();
+    super.dispose();
   }
 }

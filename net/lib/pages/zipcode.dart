@@ -36,18 +36,24 @@ class _ZipCodePageState extends State<ZipCodePage> {
             Gui.pad(50),
             Gui.textInput("Zip Code", zipCodeController),
             Gui.pad(50),
-            Gui.button(
-                "Submit",
-                () => {
-                      Provider.of<ZipCode>(context, listen: false)
-                          .updateValue(zipCodeController.text),
-                      Navigator.of(context).popUntil((route) => route.isFirst),
-                    }),
+            Gui.button("Submit", () => {zipCodeButton(context)}),
             Gui.pad(18),
           ],
         ),
       ),
     );
+  }
+
+  Future<void> zipCodeButton(BuildContext context) async {
+    String zipCodeInput = zipCodeController.text;
+    RegExp zipCodeRegExp = RegExp(r'^\d{5}$');
+    if (!zipCodeRegExp.hasMatch(zipCodeInput)) {
+      Gui.notify(context, "Please enter a valid zip code");
+      return;
+    }
+    Provider.of<ZipCode>(context, listen: false)
+        .updateValue(zipCodeController.text);
+    Navigator.of(context).popUntil((route) => route.isFirst);
   }
 
   @override

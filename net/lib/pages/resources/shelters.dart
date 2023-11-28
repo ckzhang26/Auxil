@@ -58,16 +58,50 @@ class _SheltersPageState extends State<SheltersPage> {
             body: ListView(
               children: [
                 for (var result in shelterData['data'])
-                  ListTile(
-                      leading: Text(result['zipCode']),
-                      title: Text(result['charityName']),
-                      subtitle: Text(result['url'])),
-                for (var result in housingData['data'])
-                  ListTile(
-                    leading: Text(result['zipCode']),
-                    title: Text(result['charityName']),
-                    subtitle: Text(result['url']),
-                  ),
+                  Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            result['zipCode'] ?? '',
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          Text(
+                            "${result['charityName']}",
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          Text(
+                            "${result['url']}",
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              IconButton(
+                                // Add to database
+                                onPressed: () => {},
+                                icon: Icon(Icons.favorite),
+                                color: Colors.red,
+                                iconSize: 30,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                //   ListTile(
+                //       leading: Text(result['zipCode']),
+                //       title: Text(result['charityName']),
+                //       subtitle: Text(result['url'])),
+                // for (var result in housingData['data'])
+                // ListTile(
+                //   leading: Text(result['zipCode']),
+                //   title: Text(result['charityName']),
+                //   subtitle: Text(result['url']),
+                // ),
               ],
             ),
             floatingActionButton: IconButton(
