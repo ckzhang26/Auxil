@@ -55,7 +55,8 @@ class _SheltersPageState extends State<SheltersPage> {
     return (shelterData == null || housingData == null)
         ? const Center(child: CircularProgressIndicator())
         : Scaffold(
-            appBar: Gui.header("Shelters", false),
+            appBar: Gui.headerWelcome("Shelters", false, context,
+                const Icon(Icons.my_location), mapView),
             body: Column(
               children: [
                 Expanded(
@@ -80,17 +81,16 @@ class _SheltersPageState extends State<SheltersPage> {
                         }))
               ],
             ),
-            floatingActionButton: IconButton(
-                icon: const Icon(Icons.my_location),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const MapPage(
-                              zipCode: "95819",
-                            )),
-                  );
-                }),
           );
+  }
+
+  void mapView() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => const MapPage(
+                zipCode: "95819",
+              )),
+    );
   }
 }
