@@ -88,7 +88,7 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                     child: Container(
                                       height: 300,
-                                      padding: EdgeInsets.all(12.0),
+                                      padding: const EdgeInsets.all(12.0),
                                       color: Config.green,
                                       child: ListView(
                                         children: <Widget>[
