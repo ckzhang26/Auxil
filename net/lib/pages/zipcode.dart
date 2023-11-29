@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:net/config/cfg.dart';
 import 'package:net/config/gui.dart';
@@ -53,10 +55,13 @@ class _ZipCodePageState extends State<ZipCodePage> {
       Gui.notify(context, "Please enter a valid zip code");
       return;
     }
-    Provider.of<ZipCode>(context, listen: false)
-        .updateValue(zipCodeController.text);
+
     MongoDB.giveAccess(context);
+    await MongoDB.setUser(UserModel.getGuest(zipCodeInput));
+
+    Provider.of<ZipCode>(context, listen: false).updateValue(zipCodeInput);
     Provider.of<GoogleMapsMarkerList>(context, listen: false).clear();
+
     Navigator.of(context).popUntil((route) => route.isFirst);
   }
 

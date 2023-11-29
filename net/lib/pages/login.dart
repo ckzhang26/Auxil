@@ -6,10 +6,12 @@ import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:net/config/cfg.dart';
 import 'package:net/config/gui.dart';
+import 'package:net/main.dart';
 import 'package:net/pages/password_reset.dart';
 import 'package:net/pages/signup.dart';
 import 'package:net/pages/zipcode.dart';
 import 'package:net/user/mongodb.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -81,9 +83,6 @@ class LoginPageState extends State<LoginPage> {
 
   Future<void> guestButton(BuildContext context) async {
     MongoDB.giveAccess(context);
-    await MongoDB.storeLocalUser(Database.getEmpty());
-    MongoDB.syncLocalUser(false); 
-
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => const ZipCodePage()),
@@ -103,6 +102,7 @@ class LoginPageState extends State<LoginPage> {
       return;
     }
 
+    // from database
     var udata = await MongoDB.getUser(username);
     if (udata == null) {
       Gui.notify(context, "Invalid login attempt");
@@ -110,26 +110,27 @@ class LoginPageState extends State<LoginPage> {
     }
 
     var passEncrypted = sha256.convert(utf8.encode(password)).toString();
-    if (passEncrypted != udata["password"]) {
+    if (passEncrypted != udata.password) {
       Gui.notify(context, "Password is incorrect");
       return;
     }
 
-    MongoDB.giveAccess(context);
-    await MongoDB.storeLocalUser(Database(
-        isGuest: false,
-        email: udata["email"].toString(),
-        username: udata["username"].toString(),
-        password: udata["password"].toString(),
-        zip: udata["zip"].toString(),
-        bookmarks: Bookmarks(
-          shelter: udata["bookmarks"]["shelter"],
-          job: udata["bookmarks"]["job"],
-          healthcare: udata["bookmarks"]["healthcare"],
-          veterinary: udata["bookmarks"]["veterinary"],
-        )));
-    MongoDB.syncLocalUser(false); 
+    await MongoDB.setUser(UserModel(
+      guest: false,
+      email: udata.email,
+      username: udata.username,
+      password: udata.password,
+      zip: udata.zip,
+      shelter: udata.shelter,
+      job: udata.job,
+      healthcare: udata.healthcare,
+      veterinary: udata.veterinary,
+    ));
 
+    Provider.of<ZipCode>(context, listen: false)
+        .updateValue(udata.zip.toString());
+
+    MongoDB.giveAccess(context);
     Navigator.of(context).popUntil((route) => route.isFirst);
   }
 

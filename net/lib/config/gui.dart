@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:net/config/cfg.dart';
 import 'package:net/pages/settings.dart';
+import 'package:net/user/mongodb.dart';
 
 class Gui {
   static AppBar header(String text, bool hideBack) {
@@ -25,7 +26,9 @@ class Gui {
     );
   }
 
-  static AppBar headerWelcome(String text, bool hideBack, BuildContext context) {
+  static AppBar headerWelcome(
+      String text, bool hideBack, BuildContext context) {
+
     return AppBar(
       automaticallyImplyLeading: !hideBack,
       backgroundColor: Config.green,
@@ -46,13 +49,15 @@ class Gui {
       centerTitle: true,
       actions: [
         Visibility(
-          maintainInteractivity: false,
-          child: IconButton(
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const SettingsPage()));
-            },
-            icon: const Icon(Icons.settings)))
+            maintainInteractivity: false,
+            child: IconButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const SettingsPage()));
+                },
+                icon: const Icon(Icons.settings)))
       ],
     );
   }
