@@ -3,6 +3,11 @@
 import 'package:flutter/material.dart';
 import 'package:net/config/gui.dart';
 import 'package:net/user/mongodb.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:net/config/cfg.dart';
+import 'package:net/pages/login.dart';
+import 'package:provider/provider.dart';
+import 'package:net/main.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -16,9 +21,35 @@ class SettingsPageState extends State<SettingsPage> {
 
   TextEditingController usernameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
+  void _validateAccess(BuildContext context, bool logout) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await MongoDB.syncLocalUser(true);
+
+    if (logout) {
+      MongoDB.user.guest = true;
+      prefs.clear();
+      prefs.setBool(Config.initAccessPos, true);
+      WidgetsBinding.instance.addPostFrameCallback((_) => Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const LoginPage()),
+          ));
+    } else {
+      bool? initLoad = prefs.getBool(Config.initAccessPos);
+      if (initLoad != true) {
+        WidgetsBinding.instance.addPostFrameCallback((_) => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const LoginPage()),
+            ));
+      } else {
+        Provider.of<ZipCode>(context, listen: false)
+            .updateValue(MongoDB.user.zip);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    _validateAccess(context, false);
     print(MongoDB.user.guest);
     return Scaffold(
       appBar: Gui.header("Settings", false),
@@ -51,7 +82,12 @@ class SettingsPageState extends State<SettingsPage> {
                                 });
                               },
                               child: const Text('Edit')),
-                    )
+                    ),
+                    Align(
+                      alignment: Alignment.bottomRight,
+                      child: Gui.labelButton(
+                          "Logout", 24, () => {_validateAccess(context, true)}),
+                    ),
                   ]
                 : [
                     Center(

@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:net/config/cfg.dart';
 import 'package:net/config/gui.dart';
 import 'package:net/pages/login.dart';
+import 'package:net/pages/settings.dart';
 import 'package:net/user/mongodb.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -29,42 +30,19 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final TextEditingController zipCodeController = TextEditingController();
-
-  void _validateAccess(BuildContext context, bool logout) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await MongoDB.syncLocalUser(true);
-
-    if (logout) {
-      MongoDB.user.guest = true;
-      prefs.clear();
-      prefs.setBool(Config.initAccessPos, true);
-      WidgetsBinding.instance.addPostFrameCallback((_) => Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const LoginPage()),
-          ));
-    } else {
-      bool? initLoad = prefs.getBool(Config.initAccessPos);
-      if (initLoad != true) {
-        WidgetsBinding.instance.addPostFrameCallback((_) => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const LoginPage()),
-            ));
-      } else {
-        Provider.of<ZipCode>(context, listen: false)
-            .updateValue(MongoDB.user.zip);
-      }
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    _validateAccess(context, false);
-
     widget.zipCode = Provider.of<ZipCode>(context).value;
     return Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: Config.yellow,
-        appBar: Gui.headerWelcome("Welcome", true, context),
+        appBar: Gui.headerWelcome(
+          "Welcome",
+          true,
+          context,
+          const Icon(Icons.settings),
+          callSettings,
+        ),
         body: Center(
             child: Padding(
           padding: const EdgeInsets.all(24.0),
@@ -74,8 +52,6 @@ class _HomePageState extends State<HomePage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Gui.labelButton(
-                        "Logout", 24, () => {_validateAccess(context, true)}),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -107,7 +83,7 @@ class _HomePageState extends State<HomePage> {
                                                 color: Colors.white,
                                                 fontSize: 20),
                                           ),
-                                          Gui.textInput(
+                                          Gui.textInputNK(
                                               "Zip Code", zipCodeController),
                                           ElevatedButton(
                                             style: const ButtonStyle(
@@ -229,6 +205,11 @@ class _HomePageState extends State<HomePage> {
     Navigator.of(context).popUntil((route) => route.isFirst);
 
     setState(() {});
+  }
+
+  void callSettings() {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => const SettingsPage()));
   }
 
   @override

@@ -26,9 +26,8 @@ class Gui {
     );
   }
 
-  static AppBar headerWelcome(
-      String text, bool hideBack, BuildContext context) {
-
+  static AppBar headerWelcome(String text, bool hideBack, BuildContext context,
+      Icon icon, VoidCallback callback) {
     return AppBar(
       automaticallyImplyLeading: !hideBack,
       backgroundColor: Config.green,
@@ -52,12 +51,9 @@ class Gui {
             maintainInteractivity: false,
             child: IconButton(
                 onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const SettingsPage()));
+                  callback();
                 },
-                icon: const Icon(Icons.settings)))
+                icon: icon))
       ],
     );
   }

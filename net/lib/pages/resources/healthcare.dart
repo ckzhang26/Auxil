@@ -73,7 +73,8 @@ class HealthCarePageState extends State<HealthCarePage> {
     return (hospitalData == null)
         ? const Center(child: CircularProgressIndicator())
         : Scaffold(
-            appBar: Gui.header("Healthcare", false),
+            appBar: Gui.headerWelcome("Healthcare", false, context,
+                const Icon(Icons.my_location), mapView),
             body: ListView.builder(
                 itemCount: hospitalData.length,
                 itemBuilder: (BuildContext context, int index) {
@@ -86,17 +87,16 @@ class HealthCarePageState extends State<HealthCarePage> {
                     telephoneNumber: result['telephone_number'],
                   );
                 }),
-            floatingActionButton: IconButton(
-                icon: const Icon(Icons.my_location),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const MapPage(
-                              zipCode: "95819",
-                            )),
-                  );
-                }),
           );
+  }
+
+  void mapView() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => const MapPage(
+                zipCode: "95819",
+              )),
+    );
   }
 }
