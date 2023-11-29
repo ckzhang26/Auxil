@@ -75,14 +75,10 @@ class SignUpPageState extends State<SignUpPage> {
 
     var udata = await MongoDB.getUser(username);
     if (udata != null) {
-      if (udata["username"] == "no") {
-        Gui.notify(context, "Connection failure");
-      } else {
-        Gui.notify(context, "Invalid login attempt");
-      }
+      Gui.notify(context, "Invalid signup attempt");
       return;
     }
-  
+
     String password1 = passwordController.text;
     if (password1.length < 8) {
       Gui.notify(context, "Your password must be atleast 8 characters long");
@@ -102,16 +98,16 @@ class SignUpPageState extends State<SignUpPage> {
     }
 
     var encrpted = sha256.convert(utf8.encode(password2)).toString();
-    Bookmarks bookmarks = Bookmarks(// empty
-        shelter: [], job: [], healthcare: [], veterinary: []);
-
-    Database user = Database(
-        isGuest: false,
+    UserModel user = UserModel(
+        guest: false,
         email: email,
         username: username,
         password: encrpted,
         zip: zip,
-        bookmarks: bookmarks);
+        shelter: [],
+        job: [],
+        healthcare: [],
+        veterinary: []);
 
     if (await MongoDB.signup(context, user)) {
       Navigator.pop(context);

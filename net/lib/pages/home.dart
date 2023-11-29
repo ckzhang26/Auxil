@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -27,11 +29,13 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final TextEditingController zipCodeController = TextEditingController();
+
   void _validateAccess(BuildContext context, bool logout) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    MongoDB.syncLocalUser(true);
+    await MongoDB.syncLocalUser(true);
+
     if (logout) {
-      MongoDB.user.isGuest = true;
+      MongoDB.user.guest = true;
       prefs.clear();
       prefs.setBool(Config.initAccessPos, true);
       WidgetsBinding.instance.addPostFrameCallback((_) => Navigator.push(
@@ -45,14 +49,17 @@ class _HomePageState extends State<HomePage> {
               context,
               MaterialPageRoute(builder: (context) => const LoginPage()),
             ));
+      } else {
+        Provider.of<ZipCode>(context, listen: false)
+            .updateValue(MongoDB.user.zip);
       }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    MongoDB.syncLocalUser(true);
     _validateAccess(context, false);
+
     widget.zipCode = Provider.of<ZipCode>(context).value;
     return Scaffold(
         resizeToAvoidBottomInset: false,
@@ -73,7 +80,7 @@ class _HomePageState extends State<HomePage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          widget.zipCode,
+                          widget.zipCode == "null" ? "" : widget.zipCode,
                           style: const TextStyle(fontSize: 16),
                         ),
                         ElevatedButton(
@@ -197,17 +204,31 @@ class _HomePageState extends State<HomePage> {
         )));
   }
 
-  Future<void> zipCodeButton(BuildContext context) async {
+  void zipCodeButton(BuildContext context) async {
     String zipCodeInput = zipCodeController.text;
     RegExp zipCodeRegExp = RegExp(r'^\d{5}$');
     if (!zipCodeRegExp.hasMatch(zipCodeInput)) {
       Gui.notify(context, "Please enter a valid zip code");
       return;
     }
-    Provider.of<ZipCode>(context, listen: false)
-        .updateValue(zipCodeController.text);
+
+    Provider.of<ZipCode>(context, listen: false).updateValue(zipCodeInput);
+
+    if (!MongoDB.user.guest) {
+      MongoDB.user.zip = zipCodeInput;
+      bool success = await MongoDB.updateUserToDatabase(
+          MongoDB.user.username, MongoDB.user);
+      if (!success) {
+        Gui.notify(context, "Error syncing zipcode to account");
+      }
+      MongoDB.saveLocalUser();
+    } else {
+      MongoDB.storeLocalUser(UserModel.getGuest(zipCodeInput));
+    }
+
     Navigator.of(context).popUntil((route) => route.isFirst);
-    MongoDB.giveAccess(context);
+
+    setState(() {});
   }
 
   @override

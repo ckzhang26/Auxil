@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:net/config/gui.dart';
 import 'package:net/user/mongodb.dart';
@@ -13,21 +15,11 @@ class SettingsPageState extends State<SettingsPage> {
   bool isEditing = false;
 
   TextEditingController usernameController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
   TextEditingController emailController = TextEditingController();
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  void getSettings() async {
-    setState(() {});
-  }
-
-  @override
   Widget build(BuildContext context) {
-    getSettings();
+    print(MongoDB.user.guest);
     return Scaffold(
       appBar: Gui.header("Settings", false),
       body: SingleChildScrollView(
@@ -35,12 +27,10 @@ class SettingsPageState extends State<SettingsPage> {
           padding: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
-            children: MongoDB.user.isGuest != null || MongoDB.user.isGuest == false
+            children: MongoDB.user.guest == false
                 ? [
-                    buildUserInfoLabel(
-                        "Username", MongoDB.user.username ?? "", usernameController),
-                    buildUserInfoLabel(
-                        "Password", "********", passwordController),
+                    buildUserInfoLabel("Username", MongoDB.user.username ?? "",
+                        usernameController),
                     buildUserInfoLabel(
                         "Email", MongoDB.user.email ?? "", emailController),
                     const SizedBox(
@@ -51,7 +41,7 @@ class SettingsPageState extends State<SettingsPage> {
                       child: isEditing
                           ? ElevatedButton(
                               onPressed: () {
-                                saveChanges();
+                                saveChanges(context);
                               },
                               child: const Text('Save Changes'))
                           : TextButton(
@@ -64,24 +54,38 @@ class SettingsPageState extends State<SettingsPage> {
                     )
                   ]
                 : [
-                    Center(child: Gui.label("You are logged in as a guest", 27)),
-                    Center(child: Gui.label("Please login before trying to access settings", 16))
-                ],
+                    Center(
+                        child: Gui.label("You are logged in as a guest", 27)),
+                    Center(
+                        child: Gui.label(
+                            "Please login before trying to access settings",
+                            16))
+                  ],
           ),
         ),
       ),
     );
   }
 
-  void saveChanges() {
-    String newUsername = usernameController.text;
-    String newPassword = passwordController.text;
-    String newEmail = emailController.text;
-    print('Saved changes: Username: $newUsername, Email: $newEmail');
-
+  Future<void> saveChanges(BuildContext context) async {
     setState(() {
       isEditing = false;
     });
+
+    bool success = await MongoDB.updateUserToDatabase(
+        MongoDB.user.username,
+        UserModel(
+            guest: false,
+            email: emailController.text,
+            username: usernameController.text,
+            password: MongoDB.user.password,
+            zip: MongoDB.user.zip,
+            shelter: [],
+            job: [],
+            healthcare: [],
+            veterinary: []));
+
+    Gui.notify(context, success ? "Successfully updated" : "Failed to update!");
   }
 
   Widget buildUserInfoLabel(
