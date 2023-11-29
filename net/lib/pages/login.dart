@@ -10,10 +10,10 @@ import 'package:net/pages/password_reset.dart';
 import 'package:net/pages/signup.dart';
 import 'package:net/pages/zipcode.dart';
 import 'package:net/user/mongodb.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
+
   @override
   State<LoginPage> createState() => LoginPageState();
 }
@@ -23,60 +23,57 @@ class LoginPageState extends State<LoginPage> {
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
 
-  Future<void> clearPrefs() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.clear();
-  }
-
   // Setup main formatting
   @override
   Widget build(BuildContext context) {
-    clearPrefs();
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: Config.yellow,
-      appBar: Gui.header("Shelter", true),
-      body: Padding(
-        padding: EdgeInsets.symmetric(
-            horizontal: MediaQuery.of(context).size.width * .05,
-            vertical: MediaQuery.of(context).size.height * .001),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          // Insert all interactables into the main widget column,
-          children: <Widget>[
-            // Gui helpers
-            Gui.pad(25),
-            Gui.textInput("Username", usernameController),
-            Gui.pad(5),
-            Gui.passwordInput("Password", passwordController),
-            Gui.labelButton(
-                "Forgot Password?",
-                26,
-                () => {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const PasswordPage()),
-                      )
-                    }),
-            Gui.pad(64),
-            Gui.button("Login", () => {loginButton(context)}),
-            Gui.pad(18),
-            Gui.label("Or", 23),
-            Gui.pad(18),
-            Gui.button("Continue As Guest", () => {guestButton(context)}),
-            Gui.pad(22),
-            Gui.labelButton(
-                "Sign Up",
-                28,
-                () => {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const SignUpPage()),
-                      )
-                    }),
-          ],
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        backgroundColor: Config.yellow,
+        appBar: Gui.header("Shelter", true),
+        body: Padding(
+          padding: EdgeInsets.symmetric(
+              horizontal: MediaQuery.of(context).size.width * .05,
+              vertical: MediaQuery.of(context).size.height * .001),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            // Insert all interactables into the main widget column,
+            children: <Widget>[
+              // Gui helpers
+              Gui.pad(25),
+              Gui.textInput("Username", usernameController),
+              Gui.pad(5),
+              Gui.passwordInput("Password", passwordController),
+              Gui.labelButton(
+                  "Forgot Password?",
+                  26,
+                  () => {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const PasswordPage()),
+                        )
+                      }),
+              Gui.pad(64),
+              Gui.button("Login", () => {loginButton(context)}),
+              Gui.pad(18),
+              Gui.label("Or", 23),
+              Gui.pad(18),
+              Gui.button("Continue As Guest", () => {guestButton(context)}),
+              Gui.pad(22),
+              Gui.labelButton(
+                  "Sign Up",
+                  28,
+                  () => {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const SignUpPage()),
+                        )
+                      }),
+            ],
+          ),
         ),
       ),
     );
@@ -84,6 +81,9 @@ class LoginPageState extends State<LoginPage> {
 
   Future<void> guestButton(BuildContext context) async {
     MongoDB.giveAccess(context);
+    await MongoDB.storeLocalUser(Database.getEmpty());
+    MongoDB.syncLocalUser(false); 
+
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => const ZipCodePage()),
@@ -102,7 +102,7 @@ class LoginPageState extends State<LoginPage> {
       Gui.notify(context, "Passwords are atleast 8 characters long");
       return;
     }
-    
+
     var udata = await MongoDB.getUser(username);
     if (udata == null) {
       Gui.notify(context, "Invalid login attempt");
@@ -116,7 +116,8 @@ class LoginPageState extends State<LoginPage> {
     }
 
     MongoDB.giveAccess(context);
-    MongoDB.updateLocalUser(Database(
+    await MongoDB.storeLocalUser(Database(
+        isGuest: false,
         email: udata["email"].toString(),
         username: udata["username"].toString(),
         password: udata["password"].toString(),
@@ -127,6 +128,7 @@ class LoginPageState extends State<LoginPage> {
           healthcare: udata["bookmarks"]["healthcare"],
           veterinary: udata["bookmarks"]["veterinary"],
         )));
+    MongoDB.syncLocalUser(false); 
 
     Navigator.of(context).popUntil((route) => route.isFirst);
   }

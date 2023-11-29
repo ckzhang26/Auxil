@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:net/config/cfg.dart';
 import 'package:net/config/gui.dart';
 import 'package:net/pages/login.dart';
+import 'package:net/user/mongodb.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -25,20 +27,20 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final TextEditingController zipCodeController = TextEditingController();
-
   void _validateAccess(BuildContext context, bool logout) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-
+    MongoDB.syncLocalUser(true);
     if (logout) {
+      MongoDB.user.isGuest = true;
       prefs.clear();
-      prefs.setBool("has_access", false);
+      prefs.setBool(Config.initAccessPos, true);
       WidgetsBinding.instance.addPostFrameCallback((_) => Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const LoginPage()),
           ));
     } else {
-      bool? initLoad = prefs.getBool(Config.accessPos);
-      if (initLoad == true) {
+      bool? initLoad = prefs.getBool(Config.initAccessPos);
+      if (initLoad != true) {
         WidgetsBinding.instance.addPostFrameCallback((_) => Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const LoginPage()),
@@ -49,9 +51,9 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    MongoDB.syncLocalUser(true);
     _validateAccess(context, false);
     widget.zipCode = Provider.of<ZipCode>(context).value;
-
     return Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: Config.yellow,
@@ -205,6 +207,7 @@ class _HomePageState extends State<HomePage> {
     Provider.of<ZipCode>(context, listen: false)
         .updateValue(zipCodeController.text);
     Navigator.of(context).popUntil((route) => route.isFirst);
+    MongoDB.giveAccess(context);
   }
 
   @override

@@ -12,7 +12,7 @@ If done correctly, the only necessary green check marks should be **Flutter, Win
 ![](https://i.gyazo.com/7646e375daec7aa65856b434b62ba76b.png)
 
 ### 2: Visual Studio Code Extensions
-To install the extensions either follow the links below or search for the names in Visual Studio Code's extension tab.
+To install the extensions, either follow the links below or search for the names in Visual Studio Code's extension tab.
 - [Flutter](https://marketplace.visualstudio.com/items?itemName=Dart-Code.flutter)
 - [Dart](https://marketplace.visualstudio.com/items?itemName=Dart-Code.dart-code)
 
@@ -25,4 +25,4 @@ Use Visual Studio Code to open the main project folder, defaulted to "net". Afte
 Most of the coding will be done in the "net\lib" directory.
 
 ### 4: Running / Testing
-Within the [Android Studio Installation guide](https://docs.flutter.dev/get-started/install/windows#android-setup), a device should have been created during the [Andrioid Emulator](https://docs.flutter.dev/get-started/install/windows#set-up-the-android-emulator) section. This device must be running in order for Flutter to compile the app properly. Finally, the app is tested and run with either the F5 key or "Run -> Start Debugging" in VS Code.
+Within the [Android Studio Installation guide](https://docs.flutter.dev/get-started/install/windows#android-setup), a device should have been created during the [Andrioid Emulator](https://docs.flutter.dev/get-started/install/windows#set-up-the-android-emulator) section. This device must be running for Flutter to compile the app properly. Finally, the app is tested and run with either the F5 key or "Run -> Start Debugging" in VS Code.

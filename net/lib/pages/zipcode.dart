@@ -20,7 +20,7 @@ class _ZipCodePageState extends State<ZipCodePage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Config.yellow,
-      appBar: Gui.header("Zip Code", true),
+      appBar: Gui.header("Zip Code", false),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
         child: Column(
