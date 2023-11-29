@@ -27,7 +27,8 @@ class MongoDB {
   static connect() async {
     db = await Db.create(dbGateway);
     await db.open();
-    collection = db.collection(dbCollection);
+    collection = await db.collection(dbCollection);
+    await syncLocalUser(true);
   }
 
   static Future<String> _insert(UserModel data) async {
@@ -87,7 +88,7 @@ class MongoDB {
   static Future<void> syncLocalUser(bool init) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     MongoDB.user = UserModel(
-      guest: MongoDB.user.guest,
+      guest: init ? true : MongoDB.user.guest,
       email: prefs.getString("email").toString(),
       username: prefs.getString("username").toString(),
       password: prefs.getString("password").toString(),
