@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:net/config/gui.dart';
 import 'package:http/http.dart' as http;
+import 'package:net/pages/resources/card_item.dart';
 import 'package:provider/provider.dart';
 import 'dart:convert';
 
@@ -77,40 +78,12 @@ class HealthCarePageState extends State<HealthCarePage> {
                 itemCount: hospitalData.length,
                 itemBuilder: (BuildContext context, int index) {
                   var result = hospitalData[index];
-                  return Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            result['facility_name'] ?? '',
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          Text(
-                            "${result['address']}",
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          Text(
-                            "${result['citytown']} ${result['state']} ${result['zip_code']}",
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          Text(result['telephone_number'] ?? ''),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              IconButton(
-                                // Add to database
-                                onPressed: () => {},
-                                icon: Icon(Icons.favorite),
-                                color: Colors.red,
-                                iconSize: 30,
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
+                  return CardItem(
+                    facilityName: result['facility_name'],
+                    address: result['address'],
+                    cityTown: result['citytown'],
+                    state: result['zip_code'],
+                    telephoneNumber: result['telephone_number'],
                   );
                 }),
             floatingActionButton: IconButton(
@@ -119,7 +92,7 @@ class HealthCarePageState extends State<HealthCarePage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => MapPage(
+                        builder: (context) => const MapPage(
                               zipCode: "95819",
                             )),
                   );

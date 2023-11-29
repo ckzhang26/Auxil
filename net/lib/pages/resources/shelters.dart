@@ -56,19 +56,28 @@ class _SheltersPageState extends State<SheltersPage> {
         ? const Center(child: CircularProgressIndicator())
         : Scaffold(
             appBar: Gui.header("Shelters", false),
-            body: ListView(
+            body: Column(
               children: [
-                for (var result in shelterData['data'])
-                  CardItem(
-                    charityName: result['charityName'],
-                    url: result['url'],
-                    zipCode: result['zipCode'],
-                  ),
-                for (var result in housingData['data'])
-                  CardItem(
-                      charityName: result['charityName'],
-                      url: result['url'],
-                      zipCode: result['zipCode']),
+                Expanded(
+                    child: ListView.builder(
+                        itemCount: shelterData['data'].length +
+                            housingData['data'].length,
+                        itemBuilder: (BuildContext context, int index) {
+                          if (index < shelterData['data'].length) {
+                            var result = shelterData['data'][index];
+                            return CardItem(
+                                charityName: result['charityName'],
+                                url: result['url'],
+                                zipCode: result['zipCode']);
+                          } else {
+                            var result = housingData['data']
+                                [index - shelterData['data'].length];
+                            return CardItem(
+                                charityName: result['charityName'],
+                                url: result['url'],
+                                zipCode: result['zipCode']);
+                          }
+                        }))
               ],
             ),
             floatingActionButton: IconButton(
