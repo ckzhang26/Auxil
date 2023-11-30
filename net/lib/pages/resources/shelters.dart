@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:net/config/gui.dart';
 import 'package:net/pages/resources/card_item.dart';
+import 'package:net/user/mongodb.dart';
 import 'dart:convert';
 
 import '../../config/maps.dart' as maps;
@@ -88,8 +89,8 @@ class _SheltersPageState extends State<SheltersPage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => const MapPage(
-                zipCode: "95819",
+          builder: (context) => MapPage(
+                zipCode: MongoDB.user.zip,
               )),
     );
   }

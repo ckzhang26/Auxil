@@ -68,8 +68,6 @@ Future<String> getCityNameFromZip2(String zipCode) async {
         .join(' ');
   }
 
-  print(cityName);
-
   return cityName;
 }
 
