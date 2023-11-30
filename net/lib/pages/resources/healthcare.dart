@@ -5,6 +5,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:net/config/gui.dart';
 import 'package:http/http.dart' as http;
 import 'package:net/pages/resources/card_item.dart';
+import 'package:net/user/mongodb.dart';
 import 'package:provider/provider.dart';
 import 'dart:convert';
 
@@ -30,7 +31,7 @@ class HealthCarePageState extends State<HealthCarePage> {
         {
           "resource": "t",
           "property": "citytown",
-          "value": await maps.getCityNameFromZip2(widget.zipCode),
+          "value": await maps.getCityNameFromZip2(MongoDB.user.zip),
           "operator": "="
         }
       ],
@@ -94,8 +95,8 @@ class HealthCarePageState extends State<HealthCarePage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => const MapPage(
-                zipCode: "95819",
+          builder: (context) => MapPage(
+                zipCode: MongoDB.user.zip,
               )),
     );
   }

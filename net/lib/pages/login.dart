@@ -33,7 +33,7 @@ class LoginPageState extends State<LoginPage> {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: Config.body,
-        appBar: Gui.header("Shelter", true),
+        appBar: Gui.header("ShelterNet", true),
         body: Padding(
           padding: EdgeInsets.symmetric(
               horizontal: MediaQuery.of(context).size.width * .05,

@@ -13,7 +13,7 @@ import '../../main.dart';
 class MapPage extends StatefulWidget {
   final String zipCode;
 
-  const MapPage({Key? key, this.zipCode = "95819"}) : super(key: key);
+  MapPage({Key? key, required this.zipCode}) : super(key: key);
 
   @override
   State<MapPage> createState() => MapPageState();
