@@ -7,6 +7,7 @@ import 'package:net/config/gui.dart';
 import 'package:net/main.dart';
 import 'package:net/pages/resources/card_item.dart';
 import 'package:net/user/mongodb.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'dart:convert';
 
@@ -44,6 +45,14 @@ class _SheltersPageState extends State<SheltersPage> {
 
           // Update pins
           Provider.of<GoogleMapsMarkerList>(context, listen: false).clear();
+          for (var result in shelterData['data']) {
+            Marker marker = Marker(
+                markerId: MarkerId(result['charityName']),
+                position: LatLng(double.parse(result['latitude']),
+                    double.parse(result['longitude'])));
+            Provider.of<GoogleMapsMarkerList>(context, listen: false)
+                .addValue(marker);
+          }
 
           setState(() {});
         }
