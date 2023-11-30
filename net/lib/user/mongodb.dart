@@ -22,7 +22,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class MongoDB {
   static var db, collection;
-  static late var user;
+  static late UserModel user;
 
   static connect() async {
     db = await Db.create(dbGateway);

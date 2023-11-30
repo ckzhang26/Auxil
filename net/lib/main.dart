@@ -7,7 +7,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await MongoDB.connect();
-  print("jump");
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (context) => ZipCode()),
     ChangeNotifierProvider(create: (context) => GoogleMapsMarkerList())
