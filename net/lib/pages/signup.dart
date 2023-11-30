@@ -25,29 +25,31 @@ class SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       backgroundColor: Config.accent,
+      resizeToAvoidBottomInset: true,
       appBar: Gui.header("Sign Up Form", false),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          // Insert all interactables into the main widget column,
-          children: <Widget>[
-            // Gui helpers
-            Gui.pad(25),
-            Gui.textInput("Email", emailController),
-            Gui.pad(5),
-            Gui.textInput("Username", usernameController),
-            Gui.pad(5),
-            Gui.passwordInput("Password", passwordController),
-            Gui.pad(5),
-            Gui.passwordInput("Confirm Password", cpasswordController),
-            Gui.pad(15),
-            Gui.textInput("Zip Code", zipcodeController),
-            Gui.pad(5),
-            Gui.button("Sign up", () => {signUpButton(context)}),
-          ],
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            // Insert all interactables into the main widget column,
+            children: <Widget>[
+              // Gui helpers
+              Gui.pad(25),
+              Gui.textInput("Email", emailController),
+              Gui.pad(5),
+              Gui.textInput("Username", usernameController),
+              Gui.pad(5),
+              Gui.passwordInput("Password", passwordController),
+              Gui.pad(5),
+              Gui.passwordInput("Confirm Password", cpasswordController),
+              Gui.pad(15),
+              Gui.textInput("Zip Code", zipcodeController),
+              Gui.pad(5),
+              Gui.button("Sign up", () => {signUpButton(context)}),
+            ],
+          ),
         ),
       ),
     );
