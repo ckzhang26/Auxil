@@ -61,7 +61,8 @@ class _VeterinaryPageState extends State<VeterinaryPage> {
             position: coords,
             infoWindow: InfoWindow(title: vetName),
           );
-          Provider.of<GoogleMapsMarkerList>(context, listen: false)
+          Provider.of<GoogleMapsMarkerList>(navigationkey.currentContext!,
+                  listen: false)
               .addValue(marker);
         }
       }

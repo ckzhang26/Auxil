@@ -2,9 +2,7 @@
 
 import 'dart:math';
 
-import 'dart:math';
 import "package:flutter/material.dart";
-import "package:net/config/cfg.dart";
 import "package:net/config/gui.dart";
 import "package:net/main.dart";
 import "package:net/pages/resources/card_item.dart";

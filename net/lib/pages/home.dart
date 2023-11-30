@@ -1,15 +1,13 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import 'package:net/config/cfg.dart';
 import 'package:net/config/gui.dart';
-import 'package:net/pages/login.dart';
+
 import 'package:net/pages/settings.dart';
 import 'package:net/user/mongodb.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'resources/shelters.dart';
 import 'resources/job_search.dart';

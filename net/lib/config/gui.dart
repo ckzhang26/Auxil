@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:net/config/cfg.dart';
-import 'package:net/pages/settings.dart';
-import 'package:net/user/mongodb.dart';
 
 class Gui {
   static AppBar header(String text, bool hideBack) {
