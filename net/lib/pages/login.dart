@@ -32,7 +32,7 @@ class LoginPageState extends State<LoginPage> {
       onWillPop: () async => false,
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        backgroundColor: Config.yellow,
+        backgroundColor: Config.body,
         appBar: Gui.header("Shelter", true),
         body: Padding(
           padding: EdgeInsets.symmetric(
@@ -132,6 +132,8 @@ class LoginPageState extends State<LoginPage> {
 
     MongoDB.giveAccess(context);
     Navigator.of(context).popUntil((route) => route.isFirst);
+
+    Gui.notify(context, "Welcome back ${udata.username}!");
   }
 
   @override

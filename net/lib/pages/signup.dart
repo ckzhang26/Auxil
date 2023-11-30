@@ -26,7 +26,7 @@ class SignUpPageState extends State<SignUpPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: Config.yellow,
+      backgroundColor: Config.accent,
       appBar: Gui.header("Sign Up Form", false),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),

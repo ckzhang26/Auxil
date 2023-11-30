@@ -21,7 +21,7 @@ class _ZipCodePageState extends State<ZipCodePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: Config.yellow,
+      backgroundColor: Config.body,
       appBar: Gui.header("Zip Code", false),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),

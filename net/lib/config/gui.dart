@@ -7,7 +7,7 @@ class Gui {
   static AppBar header(String text, bool hideBack) {
     return AppBar(
       automaticallyImplyLeading: !hideBack,
-      backgroundColor: Config.green,
+      backgroundColor: Config.main,
       foregroundColor: Colors.white,
       title: RichText(
         textAlign: TextAlign.center,
@@ -30,7 +30,7 @@ class Gui {
       Icon icon, VoidCallback callback) {
     return AppBar(
       automaticallyImplyLeading: !hideBack,
-      backgroundColor: Config.green,
+      backgroundColor: Config.main,
       foregroundColor: Colors.white,
       title: RichText(
         textAlign: TextAlign.center,
@@ -62,7 +62,7 @@ class Gui {
     return OutlinedButton(
       style: TextButton.styleFrom(
         foregroundColor: Colors.white,
-        backgroundColor: Config.green,
+        backgroundColor: Config.accent,
       ),
       onPressed: () => {callback()},
       child: LayoutBuilder(

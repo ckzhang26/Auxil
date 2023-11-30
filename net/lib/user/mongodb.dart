@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_typing_uninitialized_variables
+// ignore_for_file: prefer_typing_uninitialized_variables, use_build_context_synchronously
 
 import 'dart:developer';
 
@@ -6,7 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 import 'package:net/config/cfg.dart';
 import 'package:net/config/gui.dart';
+import 'package:net/main.dart';
+import 'package:net/pages/login.dart';
 import 'package:net/user/credentials.dart';
+import 'package:provider/provider.dart';
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -129,7 +132,37 @@ class MongoDB {
 
   static void giveAccess(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool(Config.initAccessPos, true);
+    prefs.setBool(Config.initAccessPos, false);
+  }
+
+  static void validateAccess(BuildContext context, bool logout) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await MongoDB.syncLocalUser(true);
+    inspect(MongoDB.user);
+    print("$logout");
+
+    if (logout) {
+      MongoDB.user.guest = true;
+      prefs.clear();
+      prefs.setBool(Config.initAccessPos, true);
+
+      Navigator.of(context).popUntil((route) => route.isFirst);
+      WidgetsBinding.instance.addPostFrameCallback((_) => Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const LoginPage()),
+          ));
+    } else {
+      bool? initLoad = prefs.getBool(Config.initAccessPos);
+      if (initLoad == true) {
+        WidgetsBinding.instance.addPostFrameCallback((_) => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const LoginPage()),
+            ));
+      } else {
+        Provider.of<ZipCode>(context, listen: false)
+            .updateValue(MongoDB.user.zip);
+      }
+    }
   }
 }
 

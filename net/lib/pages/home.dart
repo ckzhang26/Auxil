@@ -30,12 +30,15 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final TextEditingController zipCodeController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
+    MongoDB.validateAccess(context, false);
+    
     widget.zipCode = Provider.of<ZipCode>(context).value;
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        backgroundColor: Config.yellow,
+        backgroundColor: Config.body,
         appBar: Gui.headerWelcome(
           "Welcome",
           true,
@@ -74,7 +77,7 @@ class _HomePageState extends State<HomePage> {
                                     child: Container(
                                       height: 300,
                                       padding: const EdgeInsets.all(12.0),
-                                      color: Config.green,
+                                      color: Config.main,
                                       child: ListView(
                                         children: <Widget>[
                                           const Text(
@@ -89,7 +92,7 @@ class _HomePageState extends State<HomePage> {
                                             style: const ButtonStyle(
                                                 backgroundColor:
                                                     MaterialStatePropertyAll(
-                                                        Config.yellow)),
+                                                        Config.accent)),
                                             child: const Text('Submit'),
                                             onPressed: () =>
                                                 {zipCodeButton(context)},
