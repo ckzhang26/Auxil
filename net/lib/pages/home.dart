@@ -14,6 +14,7 @@ import 'resources/job_search.dart';
 import 'resources/map_view.dart';
 import 'resources/veterinary.dart';
 import 'resources/healthcare.dart';
+import 'favorites/favorites.dart';
 
 import '../main.dart';
 
@@ -109,6 +110,13 @@ class _HomePageState extends State<HomePage> {
                                 });
                           },
                         ),
+                        ElevatedButton(onPressed: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => FavoritesPage(
+                                      
+                                    )),
+                          ), child: Text("Favorites"))
                       ],
                     )
                   ],

@@ -110,7 +110,7 @@ class _SheltersPageState extends State<SheltersPage> {
             ),
           );
   }
-
+  
   void mapView() {
     Navigator.push(
       context,
