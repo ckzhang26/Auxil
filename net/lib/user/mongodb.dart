@@ -132,36 +132,33 @@ class MongoDB {
 
   static void giveAccess(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool(Config.initAccessPos, false);
+    prefs.setBool(Config.initAccessPos, true);
   }
 
-  static void validateAccess(BuildContext context, bool logout) async {
+  static void logout(BuildContext context) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await MongoDB.syncLocalUser(true);
-    inspect(MongoDB.user);
-    print("$logout");
 
-    if (logout) {
-      MongoDB.user.guest = true;
-      prefs.clear();
-      prefs.setBool(Config.initAccessPos, true);
+    prefs.clear();
 
-      Navigator.of(context).popUntil((route) => route.isFirst);
+    Navigator.of(context).popUntil((route) => route.isFirst);
+    WidgetsBinding.instance.addPostFrameCallback((_) => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const LoginPage()),
+        ));
+  }
+
+  static void validateAccess(BuildContext context) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool? initLoad = prefs.getBool(Config.initAccessPos);
+
+    if (initLoad != true) {
       WidgetsBinding.instance.addPostFrameCallback((_) => Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const LoginPage()),
           ));
     } else {
-      bool? initLoad = prefs.getBool(Config.initAccessPos);
-      if (initLoad == true) {
-        WidgetsBinding.instance.addPostFrameCallback((_) => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const LoginPage()),
-            ));
-      } else {
-        Provider.of<ZipCode>(context, listen: false)
-            .updateValue(MongoDB.user.zip);
-      }
+      Provider.of<ZipCode>(context, listen: false)
+          .updateValue(MongoDB.user.zip);
     }
   }
 }

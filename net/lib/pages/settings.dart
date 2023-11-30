@@ -58,7 +58,7 @@ class SettingsPageState extends State<SettingsPage> {
                     Align(
                       alignment: Alignment.bottomRight,
                       child: Gui.button(
-                          "Logout", () => {MongoDB.validateAccess(context, true)}),
+                          "Logout", () => {MongoDB.logout(context)}),
                     ),
                   ]
                 : [
@@ -72,7 +72,7 @@ class SettingsPageState extends State<SettingsPage> {
                     Align(
                       alignment: Alignment.bottomRight,
                       child: Gui.button(
-                          "Logout", () => {MongoDB.validateAccess(context, true)}),
+                          "Logout", () => {MongoDB.logout(context)}),
                     ),
                   ],
           ),

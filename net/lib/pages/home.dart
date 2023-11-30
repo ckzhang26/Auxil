@@ -33,7 +33,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    MongoDB.validateAccess(context, false);
+    MongoDB.validateAccess(context);
     
     widget.zipCode = Provider.of<ZipCode>(context).value;
     return Scaffold(
