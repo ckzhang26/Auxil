@@ -7,7 +7,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'dart:convert';
 
 class CardItem extends StatefulWidget {
-  const CardItem(
+   CardItem(
       {this.charityName,
       required this.resultType,
       this.url,
@@ -17,6 +17,7 @@ class CardItem extends StatefulWidget {
       this.facilityName,
       this.state,
       this.telephoneNumber,
+      this.isFavorite = false,
       Key? key})
       : super(key: key);
   final String? zipCode;
@@ -28,6 +29,7 @@ class CardItem extends StatefulWidget {
   final String? state;
   final String? telephoneNumber;
   final String resultType;
+  bool isFavorite = false;
 
   @override
   State<CardItem> createState() => _CardItemState();
@@ -98,16 +100,19 @@ class _CardItemState extends State<CardItem> {
                     onPressed: () {
                       setState(() {
                         // indexing via "facilityName"?
-                        if (isFavourite) {
+                        if (widget.isFavorite) {
                           // it already is a favorite, remove it
+                          userRemoveFromFavorites(context, widget.resultType, widget.charityName ?? '');
+                          widget.isFavorite = false;
                         } else {
                           // it isnt a favorite, add it
                           userAddToFavorites(context, widget.resultType);
+                          widget.isFavorite = true;
                         }
-                        isFavourite = !isFavourite;
+                        // widget.isFavorite = !widget.isFavorite;
                       });
                     },
-                    icon: isFavourite
+                    icon: widget.isFavorite
                         ? const Icon(Icons.favorite)
                         : const Icon(Icons.favorite_border),
                     color: Colors.red,
@@ -158,6 +163,23 @@ class _CardItemState extends State<CardItem> {
           "telephoneNumber": widget.telephoneNumber,
         };
         MongoDB.user.job.add((jsonEncode(data)));
+        break;
+    }
+  }
+
+  void userRemoveFromFavorites(BuildContext context, String resultType, String name) {
+    switch(resultType) {
+      case 'shelter':
+        MongoDB.user.shelter.removeWhere((element) => widget.charityName == jsonDecode(element)['charityName']);
+        break;
+      case 'healthcare':
+              MongoDB.user.healthcare.removeWhere((element) => widget.facilityName == jsonDecode(element)['facility_name']);
+        break;
+      case 'job':
+              MongoDB.user.job.removeWhere((element) => widget.facilityName == jsonDecode(element)['facility_name']);
+        break;
+      case 'veterinary':
+              MongoDB.user.veterinary.removeWhere((element) => widget.facilityName == jsonDecode(element)['facility_name']);
         break;
     }
   }

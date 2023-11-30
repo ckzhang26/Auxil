@@ -28,7 +28,6 @@ class _SheltersPageState extends State<SheltersPage> {
 
   Future<void> _fetchData() async {
     String city = await maps.getCityNameFromZip2(widget.zipCode);
-    print(city);
     if (city != null) {
       try {
         final shelterResponse = await http.get(Uri.parse(
@@ -110,7 +109,7 @@ class _SheltersPageState extends State<SheltersPage> {
             ),
           );
   }
-  
+
   void mapView() {
     Navigator.push(
       context,
