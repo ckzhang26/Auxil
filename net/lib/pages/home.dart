@@ -34,7 +34,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     MongoDB.validateAccess(context);
-    
+
     widget.zipCode = Provider.of<ZipCode>(context).value;
     return Scaffold(
         resizeToAvoidBottomInset: false,
@@ -61,6 +61,9 @@ class _HomePageState extends State<HomePage> {
                         Text(
                           widget.zipCode == "null" ? "" : widget.zipCode,
                           style: const TextStyle(fontSize: 16),
+                        ),
+                        const SizedBox(
+                          width: 55,
                         ),
                         ElevatedButton(
                           child: const Text('Change Zip Code'),
@@ -93,7 +96,11 @@ class _HomePageState extends State<HomePage> {
                                                 backgroundColor:
                                                     MaterialStatePropertyAll(
                                                         Config.accent)),
-                                            child: const Text('Submit'),
+                                            child: const Text(
+                                              'Submit',
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
                                             onPressed: () =>
                                                 {zipCodeButton(context)},
                                           ),
