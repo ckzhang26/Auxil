@@ -152,15 +152,15 @@ class _CardItemState extends State<CardItem> {
         MongoDB.user.healthcare.add(jsonEncode(data));
         break;
       case 'veterinary':
-        data = {"facilityName": widget.facilityName, "address": widget.address};
+        data = {"facility_name": widget.facilityName, "address": widget.address};
         MongoDB.user.veterinary.add(jsonEncode(data));
         break;
       case 'job':
         data = {
-          "facilityName": widget.facilityName,
+          "facility_name": widget.facilityName,
           "url": widget.url,
           "address": widget.address,
-          "telephoneNumber": widget.telephoneNumber,
+          "telephone_number": widget.telephoneNumber,
         };
         MongoDB.user.job.add((jsonEncode(data)));
         break;
