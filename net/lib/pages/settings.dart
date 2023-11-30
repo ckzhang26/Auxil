@@ -32,7 +32,6 @@ class SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    inspect(MongoDB.user);
     return Scaffold(
       appBar: Gui.header("Settings", false),
       body: SingleChildScrollView(

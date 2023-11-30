@@ -74,6 +74,7 @@ class MongoDB {
   static Future<void> storeLocalUser(UserModel data) async {
     MongoDB.user = data;
     final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool("guest", data.guest);
     prefs.setString("email", data.email);
     prefs.setString("username", data.username);
     prefs.setString("password", data.password);
@@ -91,7 +92,7 @@ class MongoDB {
   static Future<void> syncLocalUser(bool init) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     MongoDB.user = UserModel(
-      guest: init ? true : MongoDB.user.guest,
+      guest: prefs.getBool("guest").toString().toLowerCase() == 'true',
       email: prefs.getString("email").toString(),
       username: prefs.getString("username").toString(),
       password: prefs.getString("password").toString(),
