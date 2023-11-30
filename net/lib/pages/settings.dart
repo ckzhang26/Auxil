@@ -57,8 +57,8 @@ class SettingsPageState extends State<SettingsPage> {
                     Gui.pad(25),
                     Align(
                       alignment: Alignment.bottomRight,
-                      child: Gui.button(
-                          "Logout", () => {MongoDB.logout(context)}),
+                      child:
+                          Gui.button("Logout", () => {MongoDB.logout(context)}),
                     ),
                   ]
                 : [
@@ -71,8 +71,8 @@ class SettingsPageState extends State<SettingsPage> {
                     Gui.pad(25),
                     Align(
                       alignment: Alignment.bottomRight,
-                      child: Gui.button(
-                          "Logout", () => {MongoDB.logout(context)}),
+                      child:
+                          Gui.button("Logout", () => {MongoDB.logout(context)}),
                     ),
                   ],
           ),
@@ -105,6 +105,52 @@ class SettingsPageState extends State<SettingsPage> {
     }
 
     Gui.notify(context, success ? "Successfully updated" : "Failed to update!");
+  }
+
+  List<Widget> _buildLoggedInContent() {
+    return [
+      buildUserInfoLabel(
+          "Username", MongoDB.user.username ?? "", usernameController),
+      buildUserInfoLabel("Email", MongoDB.user.email ?? "", emailController),
+      const SizedBox(
+        height: 16,
+      ),
+      Align(
+        alignment: Alignment.centerRight,
+        child: isEditing
+            ? ElevatedButton(
+                onPressed: () {
+                  saveChanges(context);
+                },
+                child: const Text('Save Changes'))
+            : TextButton(
+                onPressed: () {
+                  setState(() {
+                    isEditing = true;
+                  });
+                },
+                child: const Text('Edit')),
+      ),
+      Align(
+        alignment: Alignment.bottomRight,
+        child: Gui.labelButton(
+            "Logout", 24, () => {_validateAccess(context, true)}),
+      ),
+    ];
+  }
+
+  List<Widget> _buildGuestContent() {
+    return [
+      Center(child: Gui.label("You are logged in as a guest", 27)),
+      Center(
+          child:
+              Gui.label("Please login before trying to access settings", 16)),
+      Align(
+        alignment: Alignment.bottomRight,
+        child: Gui.labelButton(
+            "Logout", 24, () => {_validateAccess(context, true)}),
+      ),
+    ];
   }
 
   Widget buildUserInfoLabel(
