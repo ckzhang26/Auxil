@@ -72,11 +72,15 @@ class PasswordPageState extends State<PasswordPage> {
                   child: const Text("Cancel")),
               ElevatedButton(
                   onPressed: () {
-                    if (newPasswordController.text ==
+                    if (newPasswordController.text.length < 8) {
+                      Gui.notify(context,
+                          "Password must be at least 8 characters long");
+                    } else if (newPasswordController.text !=
                         confirmPasswordController.text) {
-                      updatePassword();
+                      Gui.notify(
+                          context, "Passwords do not match, please try again");
                     } else {
-                      Gui.notify(context, "Passwords do not match");
+                      updatePassword();
                     }
                     Navigator.of(context).pop();
                   },
