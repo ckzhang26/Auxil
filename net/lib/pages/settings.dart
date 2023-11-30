@@ -4,6 +4,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:net/config/gui.dart';
+import 'package:net/pages/password_reset.dart';
 import 'package:net/user/mongodb.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -19,6 +20,16 @@ class SettingsPageState extends State<SettingsPage> {
   TextEditingController usernameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
 
+  late String originalUsername;
+  late String originalEmail;
+
+  @override
+  void initState() {
+    super.initState();
+    originalUsername = MongoDB.user.username;
+    originalEmail = MongoDB.user.email;
+  }
+
   @override
   Widget build(BuildContext context) {
     inspect(MongoDB.user);
@@ -31,28 +42,50 @@ class SettingsPageState extends State<SettingsPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: MongoDB.user.guest == false
                 ? [
-                    buildUserInfoLabel("Username", MongoDB.user.username ?? "",
-                        usernameController),
                     buildUserInfoLabel(
-                        "Email", MongoDB.user.email ?? "", emailController),
+                        "Username", MongoDB.user.username, usernameController),
+                    buildUserInfoLabel(
+                        "Email", MongoDB.user.email, emailController),
                     const SizedBox(
                       height: 16,
                     ),
                     Align(
                       alignment: Alignment.centerRight,
                       child: isEditing
-                          ? ElevatedButton(
-                              onPressed: () {
-                                saveChanges(context);
-                              },
-                              child: const Text('Save Changes'))
-                          : TextButton(
-                              onPressed: () {
-                                setState(() {
-                                  isEditing = true;
-                                });
-                              },
-                              child: const Text('Edit')),
+                          ? Row(
+                              children: [
+                                ElevatedButton(
+                                  onPressed: () {
+                                    cancelChanges(context);
+                                  },
+                                  child: const Text('Cancel'),
+                                ),
+                                ElevatedButton(
+                                    onPressed: () {
+                                      saveChanges(context);
+                                    },
+                                    child: const Text('Save Changes')),
+                              ],
+                            )
+                          : Row(children: [
+                              ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const PasswordPage()));
+                                  },
+                                  child: const Text('Change Password?')),
+                              Gui.pad(20),
+                              ElevatedButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      isEditing = true;
+                                    });
+                                  },
+                                  child: const Text('Edit')),
+                            ]),
                     ),
                     Gui.pad(25),
                     Align(
@@ -107,50 +140,12 @@ class SettingsPageState extends State<SettingsPage> {
     Gui.notify(context, success ? "Successfully updated" : "Failed to update!");
   }
 
-  List<Widget> _buildLoggedInContent() {
-    return [
-      buildUserInfoLabel(
-          "Username", MongoDB.user.username ?? "", usernameController),
-      buildUserInfoLabel("Email", MongoDB.user.email ?? "", emailController),
-      const SizedBox(
-        height: 16,
-      ),
-      Align(
-        alignment: Alignment.centerRight,
-        child: isEditing
-            ? ElevatedButton(
-                onPressed: () {
-                  saveChanges(context);
-                },
-                child: const Text('Save Changes'))
-            : TextButton(
-                onPressed: () {
-                  setState(() {
-                    isEditing = true;
-                  });
-                },
-                child: const Text('Edit')),
-      ),
-      Align(
-        alignment: Alignment.bottomRight,
-        child: Gui.labelButton(
-            "Logout", 24, () => {_validateAccess(context, true)}),
-      ),
-    ];
-  }
-
-  List<Widget> _buildGuestContent() {
-    return [
-      Center(child: Gui.label("You are logged in as a guest", 27)),
-      Center(
-          child:
-              Gui.label("Please login before trying to access settings", 16)),
-      Align(
-        alignment: Alignment.bottomRight,
-        child: Gui.labelButton(
-            "Logout", 24, () => {_validateAccess(context, true)}),
-      ),
-    ];
+  Future<void> cancelChanges(BuildContext context) async {
+    setState(() {
+      isEditing = false;
+      usernameController.text = originalUsername;
+      emailController.text = originalEmail;
+    });
   }
 
   Widget buildUserInfoLabel(
@@ -191,5 +186,12 @@ class SettingsPageState extends State<SettingsPage> {
         ]),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    usernameController.dispose();
+    emailController.dispose();
+    super.dispose();
   }
 }

@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:net/config/gui.dart';
 import 'package:net/user/mongodb.dart';
+import 'package:crypto/crypto.dart';
 
 class PasswordPage extends StatefulWidget {
   const PasswordPage({super.key});
@@ -13,6 +16,7 @@ class PasswordPageState extends State<PasswordPage> {
   final usernameController = TextEditingController();
   final emailController = TextEditingController();
   final newPasswordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,6 +32,8 @@ class PasswordPageState extends State<PasswordPage> {
             Gui.textInput("Username", usernameController),
             Gui.pad(5),
             Gui.textInput("Email", emailController),
+            Gui.pad(5),
+            Gui.button("Submit", () => submitButton(context))
           ],
         ),
       ),
@@ -35,10 +41,14 @@ class PasswordPageState extends State<PasswordPage> {
   }
 
   Future<void> submitButton(BuildContext context) async {
+    newPasswordController.clear();
+    confirmPasswordController.clear();
     var udata = await MongoDB.user.username;
     var edata = await MongoDB.user.email;
     if (udata == usernameController.text && edata == emailController.text) {
       showPasswordDialog(context);
+    } else {
+      Gui.notify(context, "Either Username or Email was Incorrect");
     }
   }
 
@@ -48,16 +58,64 @@ class PasswordPageState extends State<PasswordPage> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: const Text("Update Password"),
-            content: Gui.passwordInput("New Password", newPasswordController),
+            content: SingleChildScrollView(
+              child: Column(children: [
+                Gui.passwordInput("New Password", newPasswordController),
+                Gui.passwordInput("Confirm Password", confirmPasswordController)
+              ]),
+            ),
             actions: [
               TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
                   child: const Text("Cancel")),
-              ElevatedButton(onPressed: () {}, child: const Text("Update"))
+              ElevatedButton(
+                  onPressed: () {
+                    if (newPasswordController.text ==
+                        confirmPasswordController.text) {
+                      updatePassword();
+                    } else {
+                      Gui.notify(context, "Passwords do not match");
+                    }
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text("Update"))
             ],
           );
         });
+  }
+
+  Future<void> updatePassword() async {
+    var encrypted =
+        sha256.convert(utf8.encode(newPasswordController.text)).toString();
+    UserModel updatedUser = UserModel(
+        guest: false,
+        email: MongoDB.user.email,
+        username: MongoDB.user.username,
+        password: encrypted,
+        zip: MongoDB.user.zip,
+        shelter: [],
+        job: [],
+        healthcare: [],
+        veterinary: []);
+
+    bool success =
+        await MongoDB.updateUserToDatabase(MongoDB.user.username, updatedUser);
+    if (success) {
+      MongoDB.setUser(updatedUser);
+      setState(() {});
+    }
+
+    Gui.notify(context, success ? "Successfully updated" : "Failed to update!");
+  }
+
+  @override
+  void dispose() {
+    newPasswordController.dispose();
+    confirmPasswordController.dispose();
+    emailController.dispose();
+    usernameController.dispose();
+    super.dispose();
   }
 }
