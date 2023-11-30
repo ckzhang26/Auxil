@@ -1,4 +1,7 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
+import 'package:net/config/gui.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class CardItem extends StatefulWidget {
@@ -76,10 +79,13 @@ class _CardItemState extends State<CardItem> {
                 Text(widget.telephoneNumber!),
               if (widget.url != null && widget.url!.isNotEmpty)
                 GestureDetector(
-                  onDoubleTap: () {
-                    launch(context);
+                  onDoubleTap: () async {
+                    Gui.notify(context, "Redirecting...");
+                    if (!await launchLink()) {
+                      Gui.notify(context, "Failed to redirect");
+                    }
                   },
-                  child: Text(widget.url!),
+                  child: const Text("Double tap to be redirected"),
                 ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -87,6 +93,12 @@ class _CardItemState extends State<CardItem> {
                   IconButton(
                     onPressed: () {
                       setState(() {
+                        // indexing via "facilityName"?
+                        if (isFavourite) {
+                          // it already is a favorite, remove it
+                        } else {
+                          // it isnt a favorite, add it
+                        }
                         isFavourite = !isFavourite;
                       });
                     },
@@ -103,21 +115,8 @@ class _CardItemState extends State<CardItem> {
     );
   }
 
-  launch(BuildContext context) async {
+  Future<bool> launchLink() async {
     final Uri url = Uri.parse(widget.url ?? '');
-
-    if (await canLaunchUrl(url)) {
-      await launchUrl(url);
-    } else {
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Could not launch $url'),
-            duration:
-                const Duration(seconds: 3), // Adjust the duration as needed.
-          ),
-        );
-      }
-    }
+    return await launchUrl(url);
   }
 }

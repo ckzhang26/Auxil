@@ -47,6 +47,8 @@ class HealthCarePageState extends State<HealthCarePage> {
         body: jsonString);
     if (response.statusCode == 200) {
       hospitalData = jsonDecode(response.body)['results'];
+      
+      Provider.of<GoogleMapsMarkerList>(context, listen: false).clear();
       for (var result in hospitalData) {
         String addressQuery =
             "${result['address']}%20${result['citytown']}%20${result['state']}";
