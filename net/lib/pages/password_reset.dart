@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:net/config/gui.dart';
+import 'package:net/main.dart';
 import 'package:net/user/mongodb.dart';
 import 'package:crypto/crypto.dart';
 
@@ -111,7 +112,8 @@ class PasswordPageState extends State<PasswordPage> {
       setState(() {});
     }
 
-    Gui.notify(context, success ? "Successfully updated" : "Failed to update!");
+    Gui.notify(navigationkey.currentContext!,
+        success ? "Successfully updated" : "Failed to update!");
   }
 
   @override

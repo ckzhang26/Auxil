@@ -103,21 +103,8 @@ class _CardItemState extends State<CardItem> {
     );
   }
 
-  launch(BuildContext context) async {
+  Future<void> launch(BuildContext context) async {
     final Uri url = Uri.parse(widget.url ?? '');
-
-    if (await canLaunchUrl(url)) {
-      await launchUrl(url);
-    } else {
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Could not launch $url'),
-            duration:
-                const Duration(seconds: 3), // Adjust the duration as needed.
-          ),
-        );
-      }
-    }
+    await launchUrl(url);
   }
 }

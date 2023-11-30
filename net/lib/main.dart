@@ -4,6 +4,7 @@ import 'package:net/user/mongodb.dart';
 import 'package:provider/provider.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+final navigationkey = GlobalKey<NavigatorState>();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await MongoDB.connect();
@@ -46,6 +47,7 @@ class ShelterNet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: navigationkey,
       debugShowCheckedModeBanner: false,
       title: 'ShelterNet',
       home: HomePage(),

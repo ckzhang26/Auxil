@@ -56,7 +56,8 @@ class HealthCarePageState extends State<HealthCarePage> {
         LatLng coords = await maps.getLatLngFromAddress(addressQuery);
         Marker marker = Marker(
             markerId: MarkerId(result['facility_name']), position: coords);
-        Provider.of<GoogleMapsMarkerList>(context, listen: false)
+        Provider.of<GoogleMapsMarkerList>(navigationkey.currentContext!,
+                listen: false)
             .addValue(marker);
       }
       setState(() {});
