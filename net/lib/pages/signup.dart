@@ -25,7 +25,7 @@ class SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Config.accent,
+      backgroundColor: Config.body,
       resizeToAvoidBottomInset: true,
       appBar: Gui.header("Sign Up Form", false),
       body: SingleChildScrollView(

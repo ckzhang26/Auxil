@@ -94,6 +94,22 @@ Future<LatLng> getLatLngFromZip(String zipCode) async {
   return LatLng(responseBody['lat'], responseBody['lng']);
 }
 
+Future<String> getLatLngFromZipString(String zipCode) async {
+  final path =
+      'https://www.zipcodeapi.com/rest/ubLdjcGLuKif7NfoCrVS3LM3muwIvYbiVcNTtoRD0ABGwcoSjY2Glfy4uRcyhm1H/info.json/$zipCode/degrees';
+
+  final response = await http.get(Uri.parse(path));
+  final responseBody = json.decode(response.body);
+
+  if (responseBody['lat'] == null || responseBody['lng'] == null) {
+    return '0,0';
+  }
+
+  return ('${responseBody['lat']},${responseBody['lng']}');
+}
+
+
+
 Future<LatLng> getLatLngFromAddress(String addressQuery) async {
   final path =
       'https://maps.googleapis.com/maps/api/geocode/json?address=$addressQuery&key=AIzaSyC1RuhYlMwVwWMn6RZwjBuzvECC298vpgM';
