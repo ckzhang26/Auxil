@@ -47,19 +47,23 @@ class JobsPageState extends State<JobsPage> {
   Widget build(BuildContext context) {
     return jobCount == null
         ? const Center(child: CircularProgressIndicator())
-        : (jobCount == 0 ? Gui.label("Error getting Jobs from provider\nPlease try again later", 20) : Scaffold(
-            appBar: Gui.header("Job Search", false),
-            body: ListView.builder(
-                itemCount: jobCount,
-                itemBuilder: (BuildContext context, int index) {
-                  return CardItem(
-                    facilityName: titles![index],
-                    url: urls![index],
-                    address: "Employer: ${companies![index]}",
-                    telephoneNumber: "Posted ${dates![index]}",
-                  );
-                }),
-          ));
+        : (jobCount == 0
+            ? Gui.label(
+                "Error getting Jobs from provider\nPlease try again later", 20)
+            : Scaffold(
+                appBar: Gui.header("Job Search", false),
+                body: ListView.builder(
+                    itemCount: jobCount,
+                    itemBuilder: (BuildContext context, int index) {
+                      return CardItem(
+                        resultType: "job",
+                        facilityName: titles![index],
+                        url: urls![index],
+                        address: "Employer: ${companies![index]}",
+                        telephoneNumber: "Posted ${dates![index]}",
+                      );
+                    }),
+              ));
   }
 
   Future _scrape() async {
@@ -103,10 +107,8 @@ class JobsPageState extends State<JobsPage> {
     jobCount = [titles!.length, urls!.length, companies!.length, dates!.length]
         .reduce(min);
 
-    // Update pins 
+    // Update pins
     Provider.of<GoogleMapsMarkerList>(context, listen: false).clear();
-    
-
 
     setState(() {});
   }

@@ -2,11 +2,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:net/config/gui.dart';
+import 'package:net/user/mongodb.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'dart:convert';
 
 class CardItem extends StatefulWidget {
   const CardItem(
       {this.charityName,
+      required this.resultType,
       this.url,
       this.zipCode,
       this.address,
@@ -24,6 +27,7 @@ class CardItem extends StatefulWidget {
   final String? cityTown;
   final String? state;
   final String? telephoneNumber;
+  final String resultType;
 
   @override
   State<CardItem> createState() => _CardItemState();
@@ -98,6 +102,7 @@ class _CardItemState extends State<CardItem> {
                           // it already is a favorite, remove it
                         } else {
                           // it isnt a favorite, add it
+                          userAddToFavorites(context, widget.resultType);
                         }
                         isFavourite = !isFavourite;
                       });
@@ -118,5 +123,42 @@ class _CardItemState extends State<CardItem> {
   Future<bool> launchLink() async {
     final Uri url = Uri.parse(widget.url ?? '');
     return await launchUrl(url);
+  }
+
+  void userAddToFavorites(BuildContext context, String resultType) {
+    var data;
+    switch (resultType) {
+      case 'shelter':
+        data = {
+          "charityName": widget.charityName,
+          "url": widget.url,
+          "zipCode:": widget.zipCode
+        };
+        MongoDB.user.shelter.add(jsonEncode(data));
+        break;
+      case 'healthcare':
+        data = {
+          "facility_name": widget.facilityName,
+          "address": widget.address,
+          "citytown": widget.cityTown,
+          "zip_code": widget.zipCode,
+          "telephone_number": widget.telephoneNumber
+        };
+        MongoDB.user.healthcare.add(jsonEncode(data));
+        break;
+      case 'veterinary':
+        data = {"facilityName": widget.facilityName, "address": widget.address};
+        MongoDB.user.veterinary.add(jsonEncode(data));
+        break;
+      case 'job':
+        data = {
+          "facilityName": widget.facilityName,
+          "url": widget.url,
+          "address": widget.address,
+          "telephoneNumber": widget.telephoneNumber,
+        };
+        MongoDB.user.job.add((jsonEncode(data)));
+        break;
+    }
   }
 }

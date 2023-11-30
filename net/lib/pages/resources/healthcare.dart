@@ -47,7 +47,7 @@ class HealthCarePageState extends State<HealthCarePage> {
         body: jsonString);
     if (response.statusCode == 200) {
       hospitalData = jsonDecode(response.body)['results'];
-      
+
       Provider.of<GoogleMapsMarkerList>(context, listen: false).clear();
       for (var result in hospitalData) {
         String addressQuery =
@@ -57,10 +57,10 @@ class HealthCarePageState extends State<HealthCarePage> {
 
         LatLng coords = await maps.getLatLngFromAddress(addressQuery);
         Marker marker = Marker(
-            markerId: MarkerId(result['facility_name']), 
-            position: coords,
-            infoWindow: InfoWindow(title: result['facility_name']),
-            );
+          markerId: MarkerId(result['facility_name']),
+          position: coords,
+          infoWindow: InfoWindow(title: result['facility_name']),
+        );
         Provider.of<GoogleMapsMarkerList>(context, listen: false)
             .addValue(marker);
       }
@@ -86,6 +86,7 @@ class HealthCarePageState extends State<HealthCarePage> {
                 itemBuilder: (BuildContext context, int index) {
                   var result = hospitalData[index];
                   return CardItem(
+                    resultType: "healthcare",
                     facilityName: result['facility_name'],
                     address: result['address'],
                     cityTown: result['citytown'],

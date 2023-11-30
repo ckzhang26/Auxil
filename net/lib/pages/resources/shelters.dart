@@ -93,6 +93,7 @@ class _SheltersPageState extends State<SheltersPage> {
                           if (index < shelterData['data'].length) {
                             var result = shelterData['data'][index];
                             return CardItem(
+                                resultType: "shelter",
                                 charityName: result['charityName'],
                                 url: result['url'],
                                 zipCode: result['zipCode']);
@@ -100,6 +101,7 @@ class _SheltersPageState extends State<SheltersPage> {
                             var result = housingData['data']
                                 [index - shelterData['data'].length];
                             return CardItem(
+                                resultType: "shelter",
                                 charityName: result['charityName'],
                                 url: result['url'],
                                 zipCode: result['zipCode']);
