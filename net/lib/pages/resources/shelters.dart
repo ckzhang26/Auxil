@@ -53,6 +53,14 @@ class _SheltersPageState extends State<SheltersPage> {
             Provider.of<GoogleMapsMarkerList>(context, listen: false)
                 .addValue(marker);
           }
+          for (var result in housingData['data']) {
+            Marker marker = Marker(
+                markerId: MarkerId(result['charityName']),
+                position: LatLng(double.parse(result['latitude']),
+                    double.parse(result['longitude'])));
+            Provider.of<GoogleMapsMarkerList>(context, listen: false)
+                .addValue(marker);
+          }
 
           setState(() {});
         }
