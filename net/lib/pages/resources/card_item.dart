@@ -192,5 +192,6 @@ class _CardItemState extends State<CardItem> {
             widget.facilityName == jsonDecode(element)['facility_name']);
         break;
     }
+    MongoDB.saveLocalUser();
   }
 }
