@@ -7,7 +7,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'dart:convert';
 
 class CardItem extends StatefulWidget {
-   CardItem(
+  CardItem(
       {this.charityName,
       required this.resultType,
       this.url,
@@ -102,7 +102,8 @@ class _CardItemState extends State<CardItem> {
                         // indexing via "facilityName"?
                         if (widget.isFavorite) {
                           // it already is a favorite, remove it
-                          userRemoveFromFavorites(context, widget.resultType, widget.charityName ?? '');
+                          userRemoveFromFavorites(context, widget.resultType,
+                              widget.charityName ?? '');
                           widget.isFavorite = false;
                         } else {
                           // it isnt a favorite, add it
@@ -152,7 +153,10 @@ class _CardItemState extends State<CardItem> {
         MongoDB.user.healthcare.add(jsonEncode(data));
         break;
       case 'veterinary':
-        data = {"facility_name": widget.facilityName, "address": widget.address};
+        data = {
+          "facility_name": widget.facilityName,
+          "address": widget.address
+        };
         MongoDB.user.veterinary.add(jsonEncode(data));
         break;
       case 'job':
@@ -165,21 +169,27 @@ class _CardItemState extends State<CardItem> {
         MongoDB.user.job.add((jsonEncode(data)));
         break;
     }
+    MongoDB.saveLocalUser();
   }
 
-  void userRemoveFromFavorites(BuildContext context, String resultType, String name) {
-    switch(resultType) {
+  void userRemoveFromFavorites(
+      BuildContext context, String resultType, String name) {
+    switch (resultType) {
       case 'shelter':
-        MongoDB.user.shelter.removeWhere((element) => widget.charityName == jsonDecode(element)['charityName']);
+        MongoDB.user.shelter.removeWhere((element) =>
+            widget.charityName == jsonDecode(element)['charityName']);
         break;
       case 'healthcare':
-              MongoDB.user.healthcare.removeWhere((element) => widget.facilityName == jsonDecode(element)['facility_name']);
+        MongoDB.user.healthcare.removeWhere((element) =>
+            widget.facilityName == jsonDecode(element)['facility_name']);
         break;
       case 'job':
-              MongoDB.user.job.removeWhere((element) => widget.facilityName == jsonDecode(element)['facility_name']);
+        MongoDB.user.job.removeWhere((element) =>
+            widget.facilityName == jsonDecode(element)['facility_name']);
         break;
       case 'veterinary':
-              MongoDB.user.veterinary.removeWhere((element) => widget.facilityName == jsonDecode(element)['facility_name']);
+        MongoDB.user.veterinary.removeWhere((element) =>
+            widget.facilityName == jsonDecode(element)['facility_name']);
         break;
     }
   }
