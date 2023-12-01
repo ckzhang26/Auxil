@@ -85,13 +85,18 @@ class _CardItemState extends State<CardItem> {
                 Text(widget.telephoneNumber!),
               if (widget.url != null && widget.url!.isNotEmpty)
                 GestureDetector(
-                  onDoubleTap: () async {
+                  onTap: () async {
                     Gui.notify(context, "Redirecting...");
                     if (!await launchLink()) {
                       Gui.notify(context, "Failed to redirect");
                     }
                   },
-                  child: const Text("Double tap to be redirected"),
+                  child: const Text(
+                    "Tap here to be redirected",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
