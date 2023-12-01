@@ -131,7 +131,7 @@ class _CardItemState extends State<CardItem> {
     return await launchUrl(url);
   }
 
-  void userAddToFavorites(BuildContext context, String resultType) {
+  void userAddToFavorites(BuildContext context, String resultType) async {
     var data;
     switch (resultType) {
       case 'shelter':
@@ -169,11 +169,12 @@ class _CardItemState extends State<CardItem> {
         MongoDB.user.job.add((jsonEncode(data)));
         break;
     }
-    MongoDB.saveLocalUser();
+    await MongoDB.saveLocalUser();
+    MongoDB.updateUserToDatabase(MongoDB.user.username, MongoDB.user);
   }
 
   void userRemoveFromFavorites(
-      BuildContext context, String resultType, String name) {
+      BuildContext context, String resultType, String name) async {
     switch (resultType) {
       case 'shelter':
         MongoDB.user.shelter.removeWhere((element) =>
@@ -192,6 +193,7 @@ class _CardItemState extends State<CardItem> {
             widget.facilityName == jsonDecode(element)['facility_name']);
         break;
     }
-    MongoDB.saveLocalUser();
+    await MongoDB.saveLocalUser();
+    MongoDB.updateUserToDatabase(MongoDB.user.username, MongoDB.user);
   }
 }
